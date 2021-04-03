@@ -73,16 +73,24 @@ public class User {
         this.favorites = favorites;
     }
 
+    public List<Plan> getPlans() {
+        return plans;
+    }
+
+    public void setPlans(List<Plan> plans) {
+        this.plans = plans;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(userName, user.userName) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(password, user.password) && Objects.equals(customMeals, user.customMeals) && Objects.equals(favorites, user.favorites);
+        return id == user.id && Objects.equals(userName, user.userName) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(password, user.password) && Objects.equals(customMeals, user.customMeals) && Objects.equals(favorites, user.favorites) && Objects.equals(plans, user.plans);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, firstName, lastName, password, customMeals, favorites);
+        return Objects.hash(id, userName, firstName, lastName, password, customMeals, favorites, plans);
     }
 }
