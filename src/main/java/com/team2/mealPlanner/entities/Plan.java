@@ -1,11 +1,14 @@
 package com.team2.mealPlanner.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 public class Plan {
     private int id;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
     private List<PlanMeal> planMeals;
 
