@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class PlanMeal {
     private int id;
+    private int mealId;
     private boolean isCustom;
     private MealType mealType;
 
@@ -16,6 +17,14 @@ public class PlanMeal {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getMealId() {
+        return mealId;
+    }
+
+    public void setMealId(int mealId) {
+        this.mealId = mealId;
     }
 
     public boolean isCustom() {
