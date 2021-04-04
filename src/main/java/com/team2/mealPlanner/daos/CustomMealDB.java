@@ -3,6 +3,7 @@ package com.team2.mealPlanner.daos;
 import com.team2.mealPlanner.entities.CustomMeal;
 import com.team2.mealPlanner.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -19,27 +20,49 @@ public class CustomMealDB implements CustomMealDao{
 
     @Override
     public CustomMeal getCustomMealById(int id) {
-        return null;
+        try {
+            final String GET_CUSTOM_MEAL_BY_ID = "SELECT * FROM customMeal WHERE id =?";
+            return jdbc.queryForObject(GET_CUSTOM_MEAL_BY_ID, new CustomMealMapper(), id);
+        } catch (DataAccessException ex) {
+            return null;
+        }
     }
 
     @Override
     public List<CustomMeal> getAllCustomMeals() {
-        return null;
+        final String GET_ALL_CUSTOM_MEALS = "SELECT * FROM customMeal";
+        return jdbc.query(GET_ALL_CUSTOM_MEALS, new CustomMealMapper());
     }
 
     @Override
     public CustomMeal add(CustomMeal customMeal) {
-        return null;
+        final String ADD_CUSTOM_MEAL = "INSERT INTO customMeal(userId, name, ingredients, note) VALUES(?, ?, ?, ?)";
+        jdbc.update(ADD_CUSTOM_MEAL,
+                customMeal.getUserId(),
+                customMeal.getName(),
+                customMeal.getIngredients(),
+                customMeal.getNote());
+
+        int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        customMeal.setId(newId);
+        return customMeal;
     }
 
     @Override
     public boolean update(CustomMeal customMeal) {
-        return false;
+        final String UPDATE_CUSTOM_MEAL = "UPDATE customMeal SET userId = ?, name = ?, ingredients = ?, note = ? WHERE id =?";
+        return jdbc.update(UPDATE_CUSTOM_MEAL,
+                customMeal.getUserId(),
+                customMeal.getName(),
+                customMeal.getIngredients(),
+                customMeal.getNote(),
+                customMeal.getId()) > 0 ;
     }
 
     @Override
     public boolean delete(int id) {
-        return false;
+        final String DELETE_CUSTOM_MEAL = "DELETE FROM customMeal WHERE id = ?";
+        return jdbc.update(DELETE_CUSTOM_MEAL, id) > 0;
     }
 
     public static final class CustomMealMapper implements RowMapper<CustomMeal> {
@@ -50,6 +73,7 @@ public class CustomMealDB implements CustomMealDao{
             customMeal.setName(rs.getString("name"));
             customMeal.setIngredients(rs.getString("ingredients"));
             customMeal.setNote(rs.getString("note"));
+            customMeal.setUserId(rs.getInt("userId"));
 
 
             return customMeal;

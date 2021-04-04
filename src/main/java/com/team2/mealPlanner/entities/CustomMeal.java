@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class CustomMeal {
     private int id;
+    private int userId;
     private String name;
     private String ingredients;
     private String note;
@@ -44,16 +45,24 @@ public class CustomMeal {
         this.note = note;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CustomMeal that = (CustomMeal) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(ingredients, that.ingredients) && Objects.equals(note, that.note);
+        return id == that.id && userId == that.userId && Objects.equals(name, that.name) && Objects.equals(ingredients, that.ingredients) && Objects.equals(note, that.note);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, ingredients, note);
+        return Objects.hash(id, userId, name, ingredients, note);
     }
 }
