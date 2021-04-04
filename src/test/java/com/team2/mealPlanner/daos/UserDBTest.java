@@ -35,6 +35,7 @@ class UserDBTest {
 
     @BeforeEach
     void setUp() {
+
         List<User> users = userDao.getAllUsers();
         for (User user: users) {
             userDao.deleteUser(user.getId());
@@ -355,22 +356,53 @@ class UserDBTest {
 
     @Test
     void getFavoritesById() {
+
+        User user = new User();
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setUserName("root");
+        user.setPassword("rootroot");
+        user = userDao.addUser(user);
+
+
+        User user0 = new User();
+        user0.setFirstName("Jane");
+        user0.setLastName("Doe");
+        user0.setUserName("root123");
+        user0.setPassword("rootroot");
+        user0 = userDao.addUser(user0);
+
+
+        User user1 = new User();
+        user1.setFirstName("James");
+        user1.setLastName("Doe");
+        user1.setUserName("root456");
+        user1.setPassword("rootroot");
+        user1 = userDao.addUser(user1);
+
+
         CustomMeal customMeal = new CustomMeal();
         customMeal.setName("Meal Name");
         customMeal.setIngredients("Salt");
         customMeal.setNote("Note");
+        customMeal.setUserId(user.getId());
         customMeal = customMealDao.add(customMeal);
 
         CustomMeal customMeal0 = new CustomMeal();
         customMeal0.setName("Meal Name 0");
         customMeal0.setIngredients("Sugar");
         customMeal0.setNote("Another Note");
+        customMeal0.setUserId(user0.getId());
         customMeal0 = customMealDao.add(customMeal0);
 
         CustomMeal customMeal1 = new CustomMeal();
         customMeal1.setName("Meal Name 1");
         customMeal1.setIngredients("Pepper");
         customMeal1.setNote("Another another Note");
+        customMeal1.setUserId(user1.getId());
+
+
+
         customMeal1 = customMealDao.add(customMeal1);
 
         List<CustomMeal> customMeals = new ArrayList<>();
@@ -391,6 +423,26 @@ class UserDBTest {
         List<Integer> favorites1 = new ArrayList<>();
         favorites1.add(customMeal1.getId());
 
+        /****Add Plans *******/
+
+        Plan plan = new Plan();
+        plan.setDate(LocalDate.now());
+//        plan.setPlanMeals(planMeals);
+        plan.setIdUser(user.getId());
+        plan = planDao.addPlan(plan);
+
+        Plan plan0 = new Plan();
+        plan0.setDate(LocalDate.now());
+//        plan0.setPlanMeals(planMeals0);
+        plan0.setIdUser(user0.getId());
+        plan0 = planDao.addPlan(plan0);
+
+        Plan plan1 = new Plan();
+        plan1.setDate(LocalDate.now());
+//        plan1.setPlanMeals(planMeals1);
+        plan1.setIdUser(user1.getId());
+        plan1 = planDao.addPlan(plan1);
+
         MealType mealType = new MealType();
         mealType.setName("breakfast");
         mealType = mealTypeDao.addMealType(mealType);
@@ -399,43 +451,40 @@ class UserDBTest {
         planMeal.setMealId(customMeal.getId());
         planMeal.setCustom(true);
         planMeal.setMealType(mealType);
+        planMeal.setPlanId(plan.getId());
         planMeal = planMealDao.addPlanMeal(planMeal);
+//        plan.setPlanMeals(p);
+        planDao.updatePlan(plan);
+
 
         PlanMeal planMeal0 = new PlanMeal();
         planMeal0.setMealId(customMeal0.getId());
         planMeal0.setCustom(true);
         planMeal0.setMealType(mealType);
+        planMeal0.setPlanId(plan0.getId());
         planMeal0 = planMealDao.addPlanMeal(planMeal0);
 
         PlanMeal planMeal1 = new PlanMeal();
         planMeal1.setMealId(customMeal0.getId());
         planMeal1.setCustom(true);
         planMeal1.setMealType(mealType);
+        planMeal1.setPlanId(plan1.getId());
         planMeal1 = planMealDao.addPlanMeal(planMeal1);
 
         List<PlanMeal> planMeals = new ArrayList<>();
         planMeals.add(planMeal);
 
+
         List<PlanMeal> planMeals0 = new ArrayList<>();
         planMeals0.add(planMeal0);
+
 
         List<PlanMeal> planMeals1 = new ArrayList<>();
         planMeals1.add(planMeal1);
 
-        Plan plan = new Plan();
-        plan.setDate(LocalDate.now());
-        plan.setPlanMeals(planMeals);
-        plan = planDao.addPlan(plan);
 
-        Plan plan0 = new Plan();
-        plan0.setDate(LocalDate.now());
-        plan0.setPlanMeals(planMeals0);
-        plan0 = planDao.addPlan(plan0);
 
-        Plan plan1 = new Plan();
-        plan1.setDate(LocalDate.now());
-        plan1.setPlanMeals(planMeals1);
-        plan1 = planDao.addPlan(plan1);
+        /*********PlanMeals ************/
 
         List<Plan> plans = new ArrayList<>();
         plans.add(plan);
@@ -446,35 +495,22 @@ class UserDBTest {
         List<Plan> plans1 = new ArrayList<>();
         plans1.add(plan1);
 
-        User user = new User();
-        user.setFirstName("John");
-        user.setLastName("Doe");
-        user.setUserName("root");
-        user.setPassword("rootroot");
+        /**** user ******/
         user.setFavorites(favorites);
         user.setPlans(plans);
         user.setCustomMeals(customMeals);
-        user = userDao.addUser(user);
 
-        User user0 = new User();
-        user0.setFirstName("Jane");
-        user0.setLastName("Doe");
-        user0.setUserName("root");
-        user0.setPassword("rootroot");
+        /******** user 0********/
+
         user0.setFavorites(favorites0);
         user0.setPlans(plans0);
         user0.setCustomMeals(customMeals0);
-        user0 = userDao.addUser(user0);
+        userDao.updateUser(user0);
+        /**********user 1***********/
 
-        User user1 = new User();
-        user1.setFirstName("James");
-        user1.setLastName("Doe");
-        user1.setUserName("root");
-        user1.setPassword("rootroot");
         user1.setFavorites(favorites0);
         user1.setPlans(plans0);
         user1.setCustomMeals(customMeals0);
-        user1 = userDao.addUser(user1);
 
         List<Integer> favoritesFromDao = userDao.getFavoritesById(user0.getId());
         assertEquals(1, favoritesFromDao.size());
