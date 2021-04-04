@@ -47,6 +47,11 @@ class CustomMealDBTest {
 
     @BeforeEach
     public void setUp(){
+        List<User> users = userDao.getAllUsers();
+        for (User user: users) {
+            userDao.deleteUser(user.getId());
+        }
+
         List<CustomMeal> customMeals = customMealDao.getAllCustomMeals();
         for(CustomMeal customMeal : customMeals){
             customMealDao.delete(customMeal.getId());

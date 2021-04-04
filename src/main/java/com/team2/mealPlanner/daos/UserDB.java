@@ -182,6 +182,12 @@ public class UserDB implements UserDao {
         return jdbc.query(SELECT_PLANS_FOR_USER, new PlanDB.PlanMapper(), id);
     }
 
+    @Override
+    public User findUserByLogin(String userName) {
+        String SELECT_USER_BY_UN_PWD = " SELECT * FROM user where userName =?";
+        return  jdbc.queryForObject(SELECT_USER_BY_UN_PWD,new UserMapper(),userName);
+    }
+
     public static final class UserMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet rs, int i) throws SQLException {
