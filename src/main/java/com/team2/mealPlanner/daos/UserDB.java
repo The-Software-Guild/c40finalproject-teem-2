@@ -48,9 +48,9 @@ public class UserDB implements UserDao {
 
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         user.setId(newId);
-        insertCustomMeals(user);
-        insertUserFavorite(user);
-        insertPlans(user);
+        //insertCustomMeals(user);
+        // insertUserFavorite(user);
+        //insertPlans(user);
         return user;
     }
 
@@ -83,14 +83,16 @@ public class UserDB implements UserDao {
             jdbc.update(INSERT_PLAN,
                     plan.getDate(),
                     user.getId());
-
-            for (PlanMeal planMeal : plan.getPlanMeals()) {
-                jdbc.update(INSERT_PLAN_MEAL,
-                        plan.getId(),
-                        planMeal.getMealId(),
-                        planMeal.getMealType().getId(),
-                        planMeal.isCustom());
+            if(plan.getPlanMeals() != null){
+                for (PlanMeal planMeal : plan.getPlanMeals()) {
+                    jdbc.update(INSERT_PLAN_MEAL,
+                            plan.getId(),
+                            planMeal.getMealId(),
+                            planMeal.getMealType().getId(),
+                            planMeal.isCustom());
+                }
             }
+
         }
     }
 
@@ -111,13 +113,14 @@ public class UserDB implements UserDao {
     @Override
     @Transactional
     public boolean updateUser(User user) {
-        final String UPDATE_USER = "UPDATE User SET firstName = ?, lastName = ?, userName = ?, +" +
+        final String UPDATE_USER = "UPDATE user SET firstName = ?, lastName = ?, userName = ?, " +
                 "password = ? WHERE id = ?";
         if (jdbc.update(UPDATE_USER,
                 user.getFirstName(),
                 user.getLastName(),
                 user.getUserName(),
-                user.getPassword()) <= 0) return false;
+                user.getPassword(),
+                user.getId()) <= 0) return false;
 
         final String DELETE_USER_FAVORITE = "DELETE FROM user_favorite WHERE UserId = ?";
         jdbc.update(DELETE_USER_FAVORITE, user.getId());
@@ -126,11 +129,10 @@ public class UserDB implements UserDao {
         jdbc.update(DELETE_CUSTOM_MEAL, user.getId());
 
         final String DELETE_PLAN_MEAL = "DELETE FROM plan_meal WHERE id = ?";
+        final String DELETE_PLAN_MEAL_BY_PLANID = "DELETE FROM plan_meal WHERE planId = ?";
         final String DELETE_PLAN = "DELETE FROM plan WHERE id = ?";
         for (Plan plan : user.getPlans()) {
-            for (PlanMeal planMeal : plan.getPlanMeals()) {
-                jdbc.update(DELETE_PLAN_MEAL, planMeal.getId());
-            }
+            jdbc.update(DELETE_PLAN_MEAL_BY_PLANID, plan.getId());
             jdbc.update(DELETE_PLAN, plan.getId());
         }
 
@@ -151,11 +153,10 @@ public class UserDB implements UserDao {
         jdbc.update(DELETE_CUSTOM_MEAL, id);
 
         final String DELETE_PLAN_MEAL = "DELETE FROM plan_meal WHERE id = ?";
+        final String DELETE_PLAN_MEAL_BY_PLANID = "DELETE FROM plan_meal WHERE planId = ?";
         final String DELETE_PLAN = "DELETE FROM plan WHERE id = ?";
         for (Plan plan : getAllPlansById(id)) {
-            for (PlanMeal planMeal : plan.getPlanMeals()) {
-                jdbc.update(DELETE_PLAN_MEAL, planMeal.getId());
-            }
+            jdbc.update(DELETE_PLAN_MEAL_BY_PLANID, plan.getId());
             jdbc.update(DELETE_PLAN, plan.getId());
         }
 

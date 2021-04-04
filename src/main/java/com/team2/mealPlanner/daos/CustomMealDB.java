@@ -35,6 +35,7 @@ public class CustomMealDB implements CustomMealDao{
 
     @Override
     public CustomMeal add(CustomMeal customMeal) {
+        System.out.println(customMeal.toString());
         final String ADD_CUSTOM_MEAL = "INSERT INTO customMeal(userId, name, ingredients, note) VALUES(?, ?, ?, ?)";
         jdbc.update(ADD_CUSTOM_MEAL,
                 customMeal.getUserId(),

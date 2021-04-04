@@ -93,4 +93,15 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, userName, firstName, lastName, password, customMeals, favorites, plans);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

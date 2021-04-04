@@ -6,7 +6,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.Transient;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -37,10 +39,11 @@ public class PlanDB implements PlanDao {
 
     @Override
     public Plan addPlan(Plan plan) {
-        final String INSERT_PLAN = "INSERT INTO plan(date) "
-                + "VALUES(?)";
+        final String INSERT_PLAN = "INSERT INTO plan(date, userId) "
+                + "VALUES(?,?)";
         jdbc.update(INSERT_PLAN,
-                plan.getDate()
+                plan.getDate(),
+                plan.getIdUser()
                 );
 
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
@@ -60,10 +63,12 @@ public class PlanDB implements PlanDao {
     }
 
     @Override
+    @Transactional
     public boolean deletePlan(int id) {
+        final String DELETE_PLAN_MEALS = "delete * from plan_meal where planId = ?";
         final String UPDATE_PLAN = "delete from plan WHERE id = ?";
         return jdbc.update(UPDATE_PLAN,
-                id) > 0 ;
+                id) > 0 && jdbc.update(DELETE_PLAN_MEALS,id) > 0;
     }
 
 

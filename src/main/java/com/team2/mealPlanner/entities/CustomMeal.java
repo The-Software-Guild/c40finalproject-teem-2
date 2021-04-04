@@ -65,4 +65,15 @@ public class CustomMeal {
     public int hashCode() {
         return Objects.hash(id, userId, name, ingredients, note);
     }
+
+    @Override
+    public String toString() {
+        return "CustomMeal{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", name='" + name + '\'' +
+                ", ingredients='" + ingredients + '\'' +
+                ", note='" + note + '\'' +
+                '}';
+    }
 }
