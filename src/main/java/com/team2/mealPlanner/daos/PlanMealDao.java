@@ -12,5 +12,7 @@ public interface PlanMealDao {
     boolean updatePlanMeal(PlanMeal planMeal);
     boolean deletePlanMeal(int id);
 
+    List<PlanMeal> getAllPlanMealsByPlanId(int id);
+
 
 }
