@@ -65,7 +65,7 @@ public class PlanDB implements PlanDao {
     @Override
     @Transactional
     public boolean deletePlan(int id) {
-        final String DELETE_PLAN_MEALS = "delete * from plan_meal where planId = ?";
+        final String DELETE_PLAN_MEALS = "delete from plan_meal where planId = ?";
         final String UPDATE_PLAN = "delete from plan WHERE id = ?";
         return jdbc.update(UPDATE_PLAN,
                 id) > 0 && jdbc.update(DELETE_PLAN_MEALS,id) > 0;

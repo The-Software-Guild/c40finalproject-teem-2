@@ -16,4 +16,5 @@ public interface UserDao {
     List<Integer> getFavoritesById (int id);
     List<CustomMeal> getCustomMealsById (int id);
     List<Plan> getAllPlansById (int id);
+    User findUserByLogin(String userName);
 }
