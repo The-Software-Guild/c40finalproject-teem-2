@@ -13,3 +13,20 @@ footer {
 footer p {
     padding: 15px;
 }
+
+/* start main line */
+.main_line {
+    display: block;
+    width: 5%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+/* start title */
+.title {
+    display: block;
+    margin: 5px;
+    padding: 5px;
+    color: #black;
+    text-align: center;
+    }

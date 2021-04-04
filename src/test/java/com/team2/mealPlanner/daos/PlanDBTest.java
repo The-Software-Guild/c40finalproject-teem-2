@@ -2,7 +2,7 @@ package com.team2.mealPlanner.daos;
 
 import com.team2.mealPlanner.entities.Plan;
 
-import org.apache.tomcat.jni.Local;
+import com.team2.mealPlanner.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,9 +23,19 @@ class PlanDBTest {
     @Autowired
     PlanDao planDao;
 
+    @Autowired
+    UserDao userDao;
+
+
 
     @BeforeEach
     void setUp() {
+        List<User> users = userDao.getAllUsers();
+        for (User user: users) {
+            userDao.deleteUser(user.getId());
+        }
+
+
         List<Plan> plans = planDao.getAllPlans();
         for ( Plan plan: plans) {
              planDao.deletePlan(plan.getId());
@@ -39,12 +49,23 @@ class PlanDBTest {
 
     @Test
     void getAllPlans() {
+
+
+        User user = new User();
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setUserName("root");
+        user.setPassword("rootroot");
+        user = userDao.addUser(user);
+
         Plan plan = new Plan();
         plan.setDate(LocalDate.now());
+        plan.setIdUser(user.getId());
         plan = planDao.addPlan(plan);
 
         Plan plan2 = new Plan();
         plan2.setDate(LocalDate.now());
+        plan2.setIdUser(user.getId());
         plan2 = planDao.addPlan(plan2);
 
 
@@ -52,8 +73,9 @@ class PlanDBTest {
         List<Plan> plans = planDao.getAllPlans();
 
         assertEquals(2, plans.size());
-        assertTrue( plan.equals(plans.get(0))  || plan.equals(plans.get(1)) );
-        assertTrue( plan2.equals(plans.get(0)) || plan2.equals(plans.get(1)));
+        System.out.println(plans.get(0).toString());
+        assertTrue( plan.equals(plans.get(0)));
+        assertTrue( plans.contains(plan2));
     }
 
     @Test
