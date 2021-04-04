@@ -5,6 +5,7 @@ import java.util.Objects;
 public class PlanMeal {
     private int id;
     private int mealId;
+
     private int planId;
     private int mealTypeId;
     private boolean isCustom;
@@ -19,14 +20,6 @@ public class PlanMeal {
 
     public void setMealTypeId(int mealTypeId) {
         this.mealTypeId = mealTypeId;
-    }
-
-    public int getMealId() {
-        return mealId;
-    }
-
-    public void setMealId(int mealId) {
-        this.mealId = mealId;
     }
 
     public int getPlanId() {
@@ -44,6 +37,14 @@ public class PlanMeal {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getMealId() {
+        return mealId;
+    }
+
+    public void setMealId(int mealId) {
+        this.mealId = mealId;
     }
 
     public boolean isCustom() {
