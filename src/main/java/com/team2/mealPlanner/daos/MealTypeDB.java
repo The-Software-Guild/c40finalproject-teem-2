@@ -3,6 +3,7 @@ package com.team2.mealPlanner.daos;
 import com.team2.mealPlanner.entities.MealType;
 import com.team2.mealPlanner.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -19,27 +20,38 @@ public class MealTypeDB implements MealTypeDao{
 
     @Override
     public MealType getMealTypeById(int id) {
-        return null;
+        try{
+            final String SELECT_MEALTYPE_BY_ID = "SELECT * FROM mealType WHERE id =?";
+            return jdbc.queryForObject(SELECT_MEALTYPE_BY_ID, new MealTypeMapper(), id);
+        }
+        catch(DataAccessException e){
+            return null;
+        }
     }
 
     @Override
     public List<MealType> getAllMealTypes() {
-        return null;
+        final String SELECT_ALL_MEALTYPES = "SELECT * FROM mealType";
+        return jdbc.query(SELECT_ALL_MEALTYPES, new MealTypeMapper());
     }
 
     @Override
     public MealType addMealType(MealType mealType) {
-        return null;
+        final String INSERT_MEALTYPE = "INSERT INTO mealType(id, name) VALUES(?,?)";
+        jdbc.update(INSERT_MEALTYPE, mealType.getId(), mealType.getName());
+        return mealType;
     }
 
     @Override
     public boolean updateMealType(MealType mealType) {
-        return false;
+        final String UPDATE_MEALTYPE = "UPDATE mealType SET name = ? WHERE id = ?";
+        return jdbc.update(UPDATE_MEALTYPE, mealType.getName(), mealType.getId()) > 0;
     }
 
     @Override
     public boolean deleteMealType(int id) {
-        return false;
+        final String DELETE_MEALTYPE = "DELETE FROM mealType WHERE id = ?";
+        return jdbc.update(DELETE_MEALTYPE, id) > 0;
     }
 
     public static final class MealTypeMapper implements RowMapper<MealType> {
