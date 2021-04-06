@@ -46,11 +46,11 @@ public class CustomMealController {
     public String deleteCustomMeal(Integer id, Model model) {
         CustomMeal customMeal = customMealDao.getCustomMealById(id);
         model.addAttribute("customMeal", customMeal);
-        return "performDeleteSuper";
+        return "performDeleteCustomMeal";
     }
 
-    @GetMapping("/performDeleteSuper")
-    public String performDeleteSuper(Integer id) {
+    @GetMapping("/performDeleteCustomMeal")
+    public String performDeleteCustomMeal(Integer id) {
         customMealDao.delete(id);
         return "redirect:/customMeals";
     }
