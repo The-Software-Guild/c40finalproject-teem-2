@@ -38,14 +38,16 @@ public class PlanMealDBTest {
 
     @Before
     public void setUp(){
-       List<MealType> mealTypes = mealTypeDao.getAllMealTypes();
-       for(MealType mealType : mealTypes) {
-          mealTypeDao.deleteMealType(mealType.getId());
-       }
         List<PlanMeal> planMeals = planMealDao.getAllPlanMeals();
         for(PlanMeal planMeal : planMeals){
             planMealDao.deletePlanMeal(planMeal.getId());
         }
+
+       List<MealType> mealTypes = mealTypeDao.getAllMealTypes();
+       for(MealType mealType : mealTypes) {
+          mealTypeDao.deleteMealType(mealType.getId());
+       }
+
     }
 
     @Test
