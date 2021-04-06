@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Index</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+
+    <div class="container">
+        <div class="row">
+            <!-- left container -->
+            <div class="col">
+
+                <!--container for Contact List table -->
+                <div id="mainDiv">
+                    <div class="btn-toolbar">
+                        <div class="col-sm">
+<!--                            <button type="button" id="btnCreate" class="btn btn-primary mr-2 mb-2" onclick="showAddFrom()">Create Custom Meal</button>-->
+                        </div>
+
+                        <div class="col-sm">
+                            <button type="button" id="btnSearch" class="btn btn-primary mr-2 mb-2">Search</button>
+
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>Open this select menu</option>
+                                <option value="s">Name</option>
+                                <option value="c">Category</option>
+                                <option value="a">Area</option>
+                                <option value="i">Main Ingredient</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm">
+                            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                                   aria-describedby="search-addon" />
+                        </div>
+                    </div>
+
+                    <table id="contactTable" class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th width="30%">Picture</th>
+                            <th width="30%">Name</th>
+                            <th width="20%">Details</th>
+                            <th width="20%">Favorite</th>
+                        </tr>
+                        </thead>
+                        <!-- we will add data rows dynamically to the tbody -->
+                        <tbody id="contentRows">
+                        <tr th:each="meal : ${meals}">
+                            <td>
+                                <img
+                                        th:src="@{${meal.strMealThumb}}"
+                                        class="rounded" style="width:249px;height:249px;"/>
+
+                            </td>
+                            <td th:text='${meal.strMeal}'></td>
+                            <td th:text='${meal.strMealThumb}'></td>
+
+                            <td><a href="#" th:href="@{/favorite(id=${meal.idMeal})}">Favorite</a></td>
+                        </tbody>
+                    </table>
+                </div> <!-- end #contactTableDiv -->
+            </div> <!-- end left container -->
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
