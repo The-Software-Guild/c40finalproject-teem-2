@@ -122,10 +122,10 @@ public class UserDB implements UserDao {
                 user.getPassword(),
                 user.getId()) <= 0) return false;
 
-        final String DELETE_USER_FAVORITE = "DELETE FROM user_favorite WHERE UserId = ?";
+        final String DELETE_USER_FAVORITE = "DELETE FROM user_favorite WHERE userId = ?";
         jdbc.update(DELETE_USER_FAVORITE, user.getId());
 
-        final String DELETE_CUSTOM_MEAL = "DELETE FROM customMeal WHERE UserId = ?";
+        final String DELETE_CUSTOM_MEAL = "DELETE FROM customMeal WHERE userId = ?";
         jdbc.update(DELETE_CUSTOM_MEAL, user.getId());
 
         final String DELETE_PLAN_MEAL = "DELETE FROM plan_meal WHERE id = ?";
@@ -146,10 +146,10 @@ public class UserDB implements UserDao {
     @Override
     @Transactional
     public boolean deleteUser(int id) {
-        final String DELETE_USER_FAVORITE = "DELETE FROM user_favorite WHERE UserId = ?";
+        final String DELETE_USER_FAVORITE = "DELETE FROM user_favorite WHERE userId = ?";
         jdbc.update(DELETE_USER_FAVORITE, id);
 
-        final String DELETE_CUSTOM_MEAL = "DELETE FROM customMeal WHERE UserId = ?";
+        final String DELETE_CUSTOM_MEAL = "DELETE FROM customMeal WHERE userId = ?";
         jdbc.update(DELETE_CUSTOM_MEAL, id);
 
         final String DELETE_PLAN_MEAL = "DELETE FROM plan_meal WHERE id = ?";
@@ -186,6 +186,18 @@ public class UserDB implements UserDao {
     public User findUserByLogin(String userName) {
         String SELECT_USER_BY_UN_PWD = " SELECT * FROM user where userName =?";
         return  jdbc.queryForObject(SELECT_USER_BY_UN_PWD,new UserMapper(),userName);
+    }
+
+    @Override
+    public void addFavorite(int userId, int mealId) {
+        final String ADD_FAVORITE = "INSERT INTO user_favorite (mealId, userId) VALUES (?, ?)";
+        jdbc.update(ADD_FAVORITE, mealId, userId);
+    }
+
+    @Override
+    public void deleteFavorite(int userId, int mealId) {
+        final String DELETE_FAVORITE = "DELETE FROM user_favorite WHERE mealId = ? AND userId = ?";
+        jdbc.update(DELETE_FAVORITE, mealId, userId);
     }
 
     public static final class UserMapper implements RowMapper<User> {
