@@ -51,6 +51,7 @@ class PlanDBTest {
     void getAllPlans() {
 
 
+<<<<<<< Updated upstream
         User user = new User();
         user.setFirstName("John");
         user.setLastName("Doe");
@@ -58,6 +59,8 @@ class PlanDBTest {
         user.setPassword("rootroot");
         user = userDao.addUser(user);
 
+=======
+>>>>>>> Stashed changes
         Plan plan = new Plan();
         plan.setDate(LocalDate.now());
         plan.setIdUser(user.getId());
