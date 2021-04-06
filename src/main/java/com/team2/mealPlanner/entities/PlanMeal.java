@@ -30,7 +30,6 @@ public class PlanMeal {
         this.planId = planId;
     }
 
-
     public int getId() {
         return id;
     }
