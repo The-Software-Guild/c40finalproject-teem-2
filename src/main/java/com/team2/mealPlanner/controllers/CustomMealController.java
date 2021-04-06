@@ -26,7 +26,7 @@ public class CustomMealController {
     public String displayCustomMeals(Model model) {
         List<CustomMeal> customMeals = userDao.getCustomMealsById(userId);
         model.addAttribute("customMeals", customMeals);
-        return "customMeals";
+        return "customMeal/customMeals";
     }
 
     @PostMapping("/addCustomMeal")
