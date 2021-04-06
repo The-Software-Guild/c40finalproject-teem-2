@@ -36,13 +36,13 @@ public class FavoriteController {
 
     @PostMapping("/addFavorite")
     public String addFavorite(Integer mealId){
-       // userDao.addFavorite(mealId, userId);
+       userDao.addFavorite(mealId, userId);
         return "redirect:/favorites";
     }
 
     @GetMapping("/deleteFavorite")
     public String deleteFavorite(Integer mealId){
-//        userDao.deleteFavoriteById(mealId, userId);
+    userDao.deleteFavorite(mealId, userId);
         return "redirect:/favorites";
     }
 
