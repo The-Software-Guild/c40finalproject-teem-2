@@ -16,7 +16,7 @@
 <div class="container">
     <div class="row m-4">
         <div class="col text-center border border-dark">
-            <h1><a href="/" class="text-dark">Meal Planner</a></h1>
+            <h1><a href="/" th:href="@{/home}" class="text-dark">Meal Planner</a></h1>
         </div>
     </div>
     <div class="row m-4 border border-dark">
@@ -33,34 +33,56 @@
 
 
     <div class="row m-4 border border-dark">
-        <div class="col-6 text-right"><strong>Image</strong></div>
-        <div class="col-6 text-left"><img th:src="@{meal.imageUrl}">Meal Image</div>
-
         <div class="col-6 text-right"><strong>ID</strong></div>
-        <div class="col-6 text-left"><span th:text="${meal.id}">Meal Id</span></div>
+        <div class="col-6 text-left"><span th:text="${meal.IdMeal}">Meal Id</span></div>
+
+        <div class="col-6 text-right"></div>
+        <div class="col-6 text-left">
+        <img
+                th:src="@{${meal.strMealThumb}}"
+                class="rounded" style="width:249px;height:249px;"/>
+        </div>
+
+
 
         <div class="col-6 text-right"><strong>Name</strong></div>
-        <div class="col-6 text-left"><span th:text="${meal.name}">Meal Name</span></div>
+        <div class="col-6 text-left"><span th:text="${meal.strMeal}">Meal Name</span></div>
 
         <div class="col-6 text-right"><strong>Ingredients</strong></div>
         <div class="col-6 text-left">
-            <span th:each="ingredient : ${ingredients}">
-                <span th:text="${ingredient}">Meal Ingredients </span><br/>
-            </span>
+            <div class="row">
+                <div class="col-3">
+                <span th:each="ingredient : ${ingredients}">
+                    <span th:text="${ingredient} + ' : '">Meal Ingredients </span><br/>
+                </span>
+                </div>
+
+                <div class="col-9 text-left">
+                <span th:each="measurement: ${measurements}">
+                    <span th:text="${measurement}">  Meal Measurements</span><br/>
+                </span>
+                </div>
+            </div>
         </div>
 
         <div class="col-6 text-right"><strong>Instructions</strong></div>
-        <div class="col-6 text-left"><span th:text="${meal.instructions}">Meal Instructions</span></div>
+        <div class="col-6 text-left"><span th:text="${meal.strInstructions}">Meal Instructions</span></div>
+        <div class="col-6 text-right"><strong>Video</strong></div>
+        <div class="col-6 text-left">
+            <iframe width="70%" height="300px" th:src="${'https://www.youtube.com/embed/' + meal.strYoutube}"></iframe>
+        </div>
+
 
     </div>
-    <div class="row m-6">
-        <div class="col text-center m-3">
-            <a href="#" th:href="@{/addFavorite(id=${meal.id}))}" class="btn btn-outline-info btn-lg">Add Favorites</a>
-        </div>
+    <div class="row m-6" >
+        <form action="addFavorite" method="POST" class="col text-center m-3" th:if="${!isFavorite}">
+            <input type="hidden" name="mealId" id="mealId" th:value="${meal.IdMeal}"/>
+            <button type="submit" class="btn-outline-info btn-lg">Add Favorites</button>
+        </form>
     </div>
     <div class="row m-6">
         <div class="col text-center m-3">
-            <a href="#" th:href="@{/addFavorite(id=${meal.id}))}" class="btn btn-outline-danger btn-lg">Delete Favorites</a>
+            <a href="#" th:href="@{/deleteFavorite(mealId=${meal.idMeal})}" th:if="${isFavorite}" class="btn btn-outline-danger btn-lg">Delete Favorites</a>
         </div>
     </div>
 
