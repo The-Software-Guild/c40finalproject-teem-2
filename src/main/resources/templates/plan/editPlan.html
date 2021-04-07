@@ -33,15 +33,85 @@
 
     <div class="row m-4 border border-dark">
         <div class="col-3 text-center m-3">
-            <span class="h3">Editing Plan Meal</span>
+            <span class="h3">Editing Plan</span>
         </div>
         <div class="col-7 text-center m-3">
-            <form action="editPlan" method="POST">
+            <form action="editPlan" enctype="multipart/form-data" method="POST">
                 <div class="form-group row">
                     <label class="col-3 col-form-label" for="date">
                         Date</label>
                     <div class="col-9">
                         <input id="date" type="date" name="date" th:value="${plan.date}" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label" for="breakfastMeals">
+                        Breakfast Meals</label>
+                    <div class="col-9">
+                        <select multiple id="breakfastMeals" class="form-control js-basic-multiple" name="breakfastMealsIds">
+                            <option th:each="meal : ${meals}" th:value="${meal.idMeal}"
+                                    th:text="${meal.strMeal}"
+                                    th:selected="${breakfastMeals.contains(meal)}"
+                            >Breakfast Meal</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label" for="customBreakfastMeals">
+                        Custom Breakfast Meals</label>
+                    <div class="col-9">
+                        <select multiple id="customBreakfastMeals" class="form-control js-basic-multiple" name="customBreakfastMealsIds">
+                            <option th:each="customMeal : ${customMeals}" th:value="${customMeal.id}"
+                                    th:text="${customMeal.name}"
+                                    th:selected="${customBreakfastMeals.contains(customMeal)}"
+                            >Custom Breakfast Meal</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label" for="lunchMeals">
+                        Lunch Meals</label>
+                    <div class="col-9">
+                        <select multiple id="lunchMeals" class="form-control js-basic-multiple" name="lunchMealsIds">
+                            <option th:each="meal : ${meals}" th:value="${meal.idMeal}"
+                                    th:text="${meal.strMeal}"
+                            >Lunch Meal</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label" for="customLunchMeals">
+                        Custom Lunch Meals</label>
+                    <div class="col-9">
+                        <select multiple id="customLunchMeals" class="form-control js-basic-multiple" name="customLunchMealsIds">
+                            <option th:each="customMeal : ${customMeals}" th:value="${customMeal.id}"
+                                    th:text="${customMeal.name}"
+                                    th:selected="${customLunchMeals.contains(customMeal)}"
+                            >Custom Lunch Meal</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label" for="dinnerMeals">
+                        Dinner Meals</label>
+                    <div class="col-9">
+                        <select multiple id="dinnerMeals" class="form-control js-basic-multiple" name="dinnerMealsIds">
+                            <option th:each="meal : ${meals}" th:value="${meal.idMeal}"
+                                    th:text="${meal.strMeal}"
+                            >Dinner Meal</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label" for="customDinnerMeals">
+                        Custom Dinner Meals</label>
+                    <div class="col-9">
+                        <select multiple id="customDinnerMeals" class="form-control js-basic-multiple" name="customDinnerMealsIds">
+                            <option th:each="customMeal : ${customMeals}" th:value="${customMeal.id}"
+                                    th:text="${customMeal.name}"
+                                    th:selected="${customDinnerMeals.contains(customMeal)}"
+                            >Custom Dinner Meal</option>
+                        </select>
                     </div>
                 </div>
                 <input type="hidden" id="id" name="id" class="form-control" th:value="${plan.id}">

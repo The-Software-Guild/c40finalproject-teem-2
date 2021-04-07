@@ -36,15 +36,15 @@
             <span class="h3">Editing Plan Meal</span>
         </div>
         <div class="col-7 text-center m-3">
-            <form action="editMeal" method="POST">
+            <form action="editPlanMeal" method="POST">
                 <div class="form-group row">
                     <label class="col-3 col-form-label" for="meals">
                          Meals</label>
                     <div class="col-9">
-                        <select multiple id="meals" class="form-control js-basic-multiple" name="mealsIds">
-                            <option th:each="meal : ${meals}" th:value="${meal.id}"
-                                    th:selected="${plan.planMeals.contains(meal)}"
-                                    th:text="${meal.name}"
+                        <select id="meals" class="form-control js-basic-multiple" name="mealsId">
+                            <option th:each="meal : ${meals}" th:value="${meal.idMeal}"
+                                    th:selected="${meal.idMeal == planMeal.mealId}"
+                                    th:text="${meal.strMeal}"
                             >Meals</option>
                         </select>
                     </div>
@@ -53,9 +53,9 @@
                     <label class="col-3 col-form-label" for="customMeals">
                         Your Meals</label>
                     <div class="col-9">
-                        <select multiple id="customMeals" class="form-control js-basic-multiple" name="customMealIds">
+                        <select id="customMeals" class="form-control js-basic-multiple" name="customMealId">
                             <option th:each="customMeal : ${customMeals}" th:value="${customMeal.id}"
-                                    th:selected="${plan.planMeals.contains(customMeal)}"
+                                    th:selected="${customMeal.id == planMeal.mealId}"
                                     th:text="${customMeal.name}"
                             >Your Meal</option>
                         </select>

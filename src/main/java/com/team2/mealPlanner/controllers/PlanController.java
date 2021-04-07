@@ -1,14 +1,16 @@
 package com.team2.mealPlanner.controllers;
 
-import com.team2.mealPlanner.daos.MealTypeDao;
-import com.team2.mealPlanner.daos.PlanDao;
-import com.team2.mealPlanner.daos.PlanMealDao;
-import com.team2.mealPlanner.daos.UserDao;
+import com.team2.mealPlanner.daos.*;
+import com.team2.mealPlanner.entities.CustomMeal;
+import com.team2.mealPlanner.entities.Meal;
 import com.team2.mealPlanner.entities.Plan;
 import com.team2.mealPlanner.entities.PlanMeal;
+import com.team2.mealPlanner.services.MealService;
+import com.team2.mealPlanner.utils.ApiMeal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -33,11 +35,24 @@ public class PlanController {
     @Autowired
     PlanMealDao planMealDao;
 
+    @Autowired
+    CustomMealDao customMealDao;
+
+    @Autowired
+    MealService mealService;
+
     @GetMapping("/plans")
     public String displayPlans(Model model) {
+
         List<Plan> plans = userDao.getAllPlansById(userId);
+        List<CustomMeal> customMeals = userDao.getCustomMealsById(userId);
+        List<ApiMeal> meals = mealService.getMealsFromApi();
+
         model.addAttribute("plans", plans);
-        return "plans";
+        model.addAttribute("customMeals", customMeals);
+        model.addAttribute("meals", meals);
+
+        return "plan/plans";
     }
 
     @PostMapping("/addPlan")
@@ -49,95 +64,138 @@ public class PlanController {
         List<PlanMeal> planMeals = new ArrayList<>();
 
         String[] breakfastMealsIds = request.getParameterValues("breakfastMealsIds");
-        for (String breakfastMealsId : breakfastMealsIds) {
-            PlanMeal planMeal = new PlanMeal();
-            planMeal.setMealId(Integer.parseInt(breakfastMealsId));
-            planMeal.setPlanId(plan.getId());
-            planMeal.setMealTypeId(1);
-            planMeal.setCustom(false);
-            planMeal.setMealType(mealTypeDao.getMealTypeById(1));
-            planMealDao.addPlanMeal(planMeal);
-            planMeals.add(planMeal);
+        if (breakfastMealsIds != null) {
+            addPlanMeals(plan, breakfastMealsIds, 1, false, planMeals);
         }
 
         String[] customBreakfastMealsIds = request.getParameterValues("customBreakfastMealsIds");
-        for (String customBreakfastMealsId : customBreakfastMealsIds) {
-            PlanMeal planMeal = new PlanMeal();
-            planMeal.setMealId(Integer.parseInt(customBreakfastMealsId));
-            planMeal.setPlanId(plan.getId());
-            planMeal.setMealTypeId(1);
-            planMeal.setCustom(true);
-            planMeal.setMealType(mealTypeDao.getMealTypeById(1));
-            planMealDao.addPlanMeal(planMeal);
-            planMeals.add(planMeal);
+        if (customBreakfastMealsIds != null) {
+            addPlanMeals(plan, customBreakfastMealsIds, 1, true, planMeals);
         }
 
         String[] lunchMealsIds = request.getParameterValues("lunchMealsIds");
-        for (String lunchMealsId : lunchMealsIds) {
-            PlanMeal planMeal = new PlanMeal();
-            planMeal.setMealId(Integer.parseInt(lunchMealsId));
-            planMeal.setPlanId(plan.getId());
-            planMeal.setMealTypeId(2);
-            planMeal.setCustom(false);
-            planMeal.setMealType(mealTypeDao.getMealTypeById(2));
-            planMealDao.addPlanMeal(planMeal);
-            planMeals.add(planMeal);
+        if (lunchMealsIds != null) {
+            addPlanMeals(plan, lunchMealsIds, 2, false, planMeals);
         }
 
         String[] customLunchMealsIds = request.getParameterValues("customLunchMealsIds");
-        for (String customLunchMealsId : customLunchMealsIds) {
-            PlanMeal planMeal = new PlanMeal();
-            planMeal.setMealId(Integer.parseInt(customLunchMealsId));
-            planMeal.setPlanId(plan.getId());
-            planMeal.setMealTypeId(2);
-            planMeal.setCustom(true);
-            planMeal.setMealType(mealTypeDao.getMealTypeById(2));
-            planMealDao.addPlanMeal(planMeal);
-            planMeals.add(planMeal);
+        if (customLunchMealsIds != null) {
+            addPlanMeals(plan, customLunchMealsIds, 2, true, planMeals);
         }
 
         String[] dinnerMealsIds = request.getParameterValues("dinnerMealsIds");
-        for (String dinnerMealsId : dinnerMealsIds) {
-            PlanMeal planMeal = new PlanMeal();
-            planMeal.setMealId(Integer.parseInt(dinnerMealsId));
-            planMeal.setPlanId(plan.getId());
-            planMeal.setMealTypeId(3);
-            planMeal.setCustom(false);
-            planMeal.setMealType(mealTypeDao.getMealTypeById(3));
-            planMealDao.addPlanMeal(planMeal);
-            planMeals.add(planMeal);
+        if (dinnerMealsIds != null) {
+            addPlanMeals(plan, dinnerMealsIds, 3, false, planMeals);
         }
 
         String[] customDinnerMealsIds = request.getParameterValues("customDinnerMealsIds");
-        for (String customDinnerMealsId : customDinnerMealsIds) {
-            PlanMeal planMeal = new PlanMeal();
-            planMeal.setMealId(Integer.parseInt(customDinnerMealsId));
-            planMeal.setPlanId(plan.getId());
-            planMeal.setMealTypeId(3);
-            planMeal.setCustom(true);
-            planMeal.setMealType(mealTypeDao.getMealTypeById(3));
-            planMealDao.addPlanMeal(planMeal);
-            planMeals.add(planMeal);
+        if (customDinnerMealsIds != null) {
+            addPlanMeals(plan, customDinnerMealsIds, 3, true, planMeals);
         }
-
-        plan.setPlanMeals(planMeals);
-        planDao.updatePlan(plan);
 
         return "redirect:/plans";
     }
 
+    private void addPlanMeals(Plan plan, String[] mealIds, int mealTypeId, boolean isCustom,
+                              List<PlanMeal> planMeals) {
+        for (String mealId : mealIds) {
+            PlanMeal planMeal = new PlanMeal();
+            planMeal.setMealId(Integer.parseInt(mealId));
+            planMeal.setPlanId(plan.getId());
+            planMeal.setMealTypeId(mealTypeId);
+            planMeal.setCustom(isCustom);
+            planMeal.setMealType(mealTypeDao.getMealTypeById(mealTypeId));
+            planMealDao.addPlanMeal(planMeal);
+            planMeals.add(planMeal);
+        }
+    }
+
     @GetMapping("/planDetail")
     public String planDetail(Integer id, Model model) {
+
         Plan plan = planDao.getPlanById(id);
+        List<PlanMeal> planMeals = planMealDao.getAllPlanMealsByPlanId(id);
+
+        /*
+        class Meal {
+            int id;
+            String name;
+            String mealTypeName;
+            boolean isCustom;
+        }*/
+
+        List<Meal> customPlanMeals = new ArrayList<>();
+        List<Meal> defaultPlanMeals = new ArrayList<>();
+
+        for (PlanMeal planMeal: planMeals) {
+            if (planMeal.isCustom()) {
+                Meal meal = new Meal();
+                meal.setId(planMeal.getId());
+                meal.setName(customMealDao.getCustomMealById(planMeal.getMealId()).getName());
+                meal.setMealTypeName(planMeal.getMealType().getName());
+                meal.setCustom(true);
+                meal.setMealId(planMeal.getMealId());
+                customPlanMeals.add(meal);
+
+                /*
+                meal.id = planMeal.getId();
+                meal.name = customMealDao.getCustomMealById(planMeal.getMealId()).getName();
+                meal.mealTypeName = planMeal.getMealType().getName();
+                meal.isCustom = true;
+                customPlanMeals.add(meal);*/
+            } else {
+                Meal meal = new Meal();
+                meal.setId(planMeal.getId());
+                meal.setName("use mealservice to get name by id");
+                meal.setMealTypeName(planMeal.getMealType().getName());
+                meal.setCustom(false);
+                meal.setMealId(planMeal.getMealId());
+                defaultPlanMeals.add(meal);
+            }
+        }
+
         model.addAttribute("plan", plan);
-        return "planDetail";
+        model.addAttribute("planMeals", customPlanMeals);
+        model.addAttribute("defaultPlanMeals", defaultPlanMeals);
+
+        return "plan/planDetail";
     }
 
     @GetMapping("/deletePlan")
     public String deletePlan(Integer id, Model model) {
+
         Plan plan = planDao.getPlanById(id);
+
+        List<PlanMeal> planMeals = planMealDao.getAllPlanMealsByPlanId(id);
+
+        List<Meal> customPlanMeals = new ArrayList<>();
+        List<Meal> defaultPlanMeals = new ArrayList<>();
+
+        for (PlanMeal planMeal: planMeals) {
+            if (planMeal.isCustom()) {
+                Meal meal = new Meal();
+                meal.setId(planMeal.getId());
+                meal.setName(customMealDao.getCustomMealById(planMeal.getMealId()).getName());
+                meal.setMealTypeName(planMeal.getMealType().getName());
+                meal.setCustom(true);
+                meal.setMealId(planMeal.getMealId());
+                customPlanMeals.add(meal);
+            } else {
+                Meal meal = new Meal();
+                meal.setId(planMeal.getId());
+                meal.setName("use mealservice to get name by id");
+                meal.setMealTypeName(planMeal.getMealType().getName());
+                meal.setCustom(false);
+                meal.setMealId(planMeal.getMealId());
+                defaultPlanMeals.add(meal);
+            }
+        }
+
         model.addAttribute("plan", plan);
-        return "deletePlan";
+        model.addAttribute("planMeals", customPlanMeals);
+        model.addAttribute("defaultPlanMeals", defaultPlanMeals);
+
+        return "plan/deletePlan";
     }
 
     @GetMapping("/performDeletePlan")
@@ -146,95 +204,143 @@ public class PlanController {
         return "redirect:/plans";
     }
 
+    @GetMapping("/deletePlanMeal")
+    public String deletePlanMeal(Integer id) {
+        int planId = planMealDao.getPlanMealById(id).getPlanId();
+        planMealDao.deletePlanMeal(id);
+        return "redirect:/planDetail?id=" + planId;
+    }
+
     @GetMapping("/editPlan")
     public String editPlan(Integer id, Model model) {
+
         Plan plan = planDao.getPlanById(id);
+        List<PlanMeal> planMeals = planMealDao.getAllPlanMealsByPlanId(plan.getId());
+
+        List<CustomMeal> customMeals = userDao.getCustomMealsById(userId);
+        List<CustomMeal> customBreakfastMeals = new ArrayList<>();
+        List<CustomMeal> customLunchMeals = new ArrayList<>();
+        List<CustomMeal> customDinnerMeals = new ArrayList<>();
+
+        List<ApiMeal> meals = mealService.getMealsFromApi();
+        List<ApiMeal> breakfastMeals = new ArrayList<>();
+        List<ApiMeal> lunchMeals = new ArrayList<>();
+        List<ApiMeal> dinnerMeals = new ArrayList<>();
+
+        if (planMeals != null) {
+            for (PlanMeal planMeal : planMeals) {
+                if (planMeal.isCustom()) {
+                    if (planMeal.getMealTypeId() == 1) {
+                        customBreakfastMeals.add(customMealDao.getCustomMealById(planMeal.getMealId()));
+                    } else if (planMeal.getMealTypeId() == 2) {
+                        customLunchMeals.add(customMealDao.getCustomMealById(planMeal.getMealId()));
+                    } else if (planMeal.getMealTypeId() == 3) {
+                        customDinnerMeals.add(customMealDao.getCustomMealById(planMeal.getMealId()));
+                    }
+                } else {
+                    if (planMeal.getMealTypeId() == 1) {
+                        //breakfastMeals.add();
+                    } else if (planMeal.getMealTypeId() == 2) {
+                        //lunchMeals.add();
+                    } else if (planMeal.getMealTypeId() == 3) {
+                        //dinnerMeals.add();
+                    }
+                }
+            }
+        }
+
         model.addAttribute("plan", plan);
-        return "editPlan";
+        model.addAttribute("customMeals", customMeals);
+        model.addAttribute("customBreakfastMeals", customBreakfastMeals);
+        model.addAttribute("customLunchMeals", customLunchMeals);
+        model.addAttribute("customDinnerMeals", customDinnerMeals);
+        model.addAttribute("meals", meals);
+        model.addAttribute("breakfastMeals", breakfastMeals);
+        model.addAttribute("lunchMeals", lunchMeals);
+        model.addAttribute("dinnerMeals", dinnerMeals);
+
+        return "plan/editPlan";
     }
 
     @PostMapping("/editPlan")
+    @CrossOrigin
     public String performEditPlan(Plan plan, HttpServletRequest request) {
 
         plan.setIdUser(userId);
+        planDao.updatePlan(plan);
 
         List<PlanMeal> planMeals = new ArrayList<>();
 
         String[] breakfastMealsIds = request.getParameterValues("breakfastMealsIds");
-        for (String breakfastMealsId : breakfastMealsIds) {
-            PlanMeal planMeal = new PlanMeal();
-            planMeal.setMealId(Integer.parseInt(breakfastMealsId));
-            planMeal.setPlanId(plan.getId());
-            planMeal.setMealTypeId(1);
-            planMeal.setCustom(false);
-            planMeal.setMealType(mealTypeDao.getMealTypeById(1));
-            planMealDao.addPlanMeal(planMeal);
-            planMeals.add(planMeal);
+        if (breakfastMealsIds != null) {
+            addPlanMeals(plan, breakfastMealsIds, 1, false, planMeals);
         }
 
         String[] customBreakfastMealsIds = request.getParameterValues("customBreakfastMealsIds");
-        for (String customBreakfastMealsId : customBreakfastMealsIds) {
-            PlanMeal planMeal = new PlanMeal();
-            planMeal.setMealId(Integer.parseInt(customBreakfastMealsId));
-            planMeal.setPlanId(plan.getId());
-            planMeal.setMealTypeId(1);
-            planMeal.setCustom(true);
-            planMeal.setMealType(mealTypeDao.getMealTypeById(1));
-            planMealDao.addPlanMeal(planMeal);
-            planMeals.add(planMeal);
+        if (customBreakfastMealsIds != null) {
+            addPlanMeals(plan, customBreakfastMealsIds, 1, true, planMeals);
         }
 
         String[] lunchMealsIds = request.getParameterValues("lunchMealsIds");
-        for (String lunchMealsId : lunchMealsIds) {
-            PlanMeal planMeal = new PlanMeal();
-            planMeal.setMealId(Integer.parseInt(lunchMealsId));
-            planMeal.setPlanId(plan.getId());
-            planMeal.setMealTypeId(2);
-            planMeal.setCustom(false);
-            planMeal.setMealType(mealTypeDao.getMealTypeById(2));
-            planMealDao.addPlanMeal(planMeal);
-            planMeals.add(planMeal);
+        if (lunchMealsIds != null) {
+            addPlanMeals(plan, lunchMealsIds, 2, false, planMeals);
         }
 
         String[] customLunchMealsIds = request.getParameterValues("customLunchMealsIds");
-        for (String customLunchMealsId : customLunchMealsIds) {
-            PlanMeal planMeal = new PlanMeal();
-            planMeal.setMealId(Integer.parseInt(customLunchMealsId));
-            planMeal.setPlanId(plan.getId());
-            planMeal.setMealTypeId(2);
-            planMeal.setCustom(true);
-            planMeal.setMealType(mealTypeDao.getMealTypeById(2));
-            planMealDao.addPlanMeal(planMeal);
-            planMeals.add(planMeal);
+        if (customLunchMealsIds != null) {
+            addPlanMeals(plan, customLunchMealsIds, 2, true, planMeals);
         }
 
         String[] dinnerMealsIds = request.getParameterValues("dinnerMealsIds");
-        for (String dinnerMealsId : dinnerMealsIds) {
-            PlanMeal planMeal = new PlanMeal();
-            planMeal.setMealId(Integer.parseInt(dinnerMealsId));
-            planMeal.setPlanId(plan.getId());
-            planMeal.setMealTypeId(3);
-            planMeal.setCustom(false);
-            planMeal.setMealType(mealTypeDao.getMealTypeById(3));
-            planMealDao.addPlanMeal(planMeal);
-            planMeals.add(planMeal);
+        if (dinnerMealsIds != null) {
+            addPlanMeals(plan, dinnerMealsIds, 3, false, planMeals);
         }
 
         String[] customDinnerMealsIds = request.getParameterValues("customDinnerMealsIds");
-        for (String customDinnerMealsId : customDinnerMealsIds) {
-            PlanMeal planMeal = new PlanMeal();
-            planMeal.setMealId(Integer.parseInt(customDinnerMealsId));
-            planMeal.setPlanId(plan.getId());
-            planMeal.setMealTypeId(3);
-            planMeal.setCustom(true);
-            planMeal.setMealType(mealTypeDao.getMealTypeById(3));
-            planMealDao.addPlanMeal(planMeal);
-            planMeals.add(planMeal);
+        if (customDinnerMealsIds != null) {
+            addPlanMeals(plan, customDinnerMealsIds, 3, true, planMeals);
         }
 
-        plan.setPlanMeals(planMeals);
-        planDao.updatePlan(plan);
-
         return "redirect:/planDetail?id=" + plan.getId();
+    }
+
+    @GetMapping("/editPlanMeal")
+    public String editPlanMeal(Integer id, Model model) {
+
+        PlanMeal planMeal = planMealDao.getPlanMealById(id);
+
+        Plan plan = planDao.getPlanById(planMeal.getPlanId());
+        plan.setPlanMeals(planMealDao.getAllPlanMealsByPlanId(planMeal.getPlanId()));
+
+        List<CustomMeal> customMeals = userDao.getCustomMealsById(userId);
+        List<ApiMeal> meals = mealService.getMealsFromApi();
+
+        model.addAttribute("planMeal", planMeal);
+        model.addAttribute("plan", plan);
+        model.addAttribute("customMeals", customMeals);
+        model.addAttribute("meals", meals);
+
+        return "plan/editPlanMeal";
+    }
+
+    @PostMapping("/editPlanMeal")
+    public String performEditPlanMeal(Integer id, HttpServletRequest request) {
+
+        String mealId = request.getParameter("mealId");
+        String customMealId = request.getParameter("customMealId");
+
+        PlanMeal planMeal = planMealDao.getPlanMealById(id);
+
+        if (mealId != null && customMealId == null && !planMeal.isCustom()) {
+            planMeal.setMealId(Integer.parseInt(mealId));
+            planMeal.setCustom(false);
+        } else if (mealId == null && customMealId != null && planMeal.isCustom()) {
+            planMeal.setMealId(Integer.parseInt(customMealId));
+            planMeal.setCustom(true);
+        }
+
+        planMealDao.updatePlanMeal(planMeal);
+
+        return "redirect:/planDetail?id=" + planMeal.getPlanId();
     }
 }
