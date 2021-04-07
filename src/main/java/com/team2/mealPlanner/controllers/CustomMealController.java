@@ -31,6 +31,7 @@ public class CustomMealController {
 
     @PostMapping("/addCustomMeal")
     public String addCustomMeal(CustomMeal customMeal) {
+        customMeal.setUserId(userId);
         customMealDao.add(customMeal);
         return "redirect:/customMeals";
     }
@@ -39,14 +40,14 @@ public class CustomMealController {
     public String customMealDetail(Integer id, Model model) {
         CustomMeal customMeal = customMealDao.getCustomMealById(id);
         model.addAttribute("customMeal", customMeal);
-        return "customMealDetail";
+        return "customMeal/customMealDetail";
     }
 
     @GetMapping("/deleteCustomMeal")
     public String deleteCustomMeal(Integer id, Model model) {
         CustomMeal customMeal = customMealDao.getCustomMealById(id);
         model.addAttribute("customMeal", customMeal);
-        return "performDeleteCustomMeal";
+        return "customMeal/deleteCustomMeal";
     }
 
     @GetMapping("/performDeleteCustomMeal")
@@ -59,12 +60,17 @@ public class CustomMealController {
     public String editCustomMeal(Integer id, Model model) {
         CustomMeal customMeal = customMealDao.getCustomMealById(id);
         model.addAttribute("customMeal", customMeal);
-        return "editCustomMeal";
+        return "customMeal/editCustomMeal";
     }
 
     @PostMapping("/editCustomMeal")
     public String performEditCustomMeal(CustomMeal customMeal) {
+        customMeal.setUserId(userId);
         customMealDao.update(customMeal);
-        return "redirect:/customMealDetail?id=" + customMeal.getId();
+        return "redirect:/customMeals";
     }
 }
+
+
+
+

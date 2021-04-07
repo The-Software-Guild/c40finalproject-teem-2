@@ -16,12 +16,12 @@
 <div class="container">
     <div class="row m-4">
         <div class="col text-center border border-dark">
-            <h1><a href="/" class="text-dark">Meal Planner</a></h1>
+            <h1><a href="/" th:href="@{/home}" class="text-dark">Meal Planner</a></h1>
         </div>
     </div>
     <div class="row m-4 border border-dark">
         <div class="col text-center m-3">
-            <a href="customMeals" class="btn btn-outline-primary btn-lg">Custom Meals</a>
+            <a href="/" th:href="@{/customMeals}" class="btn btn-outline-primary btn-lg">Custom Meals</a>
         </div>
         <div class="col text-center m-3">
             <a href="plans" class="btn btn-outline-primary btn-lg">Plans</a>
@@ -43,7 +43,7 @@
                     <label class="col-3 col-form-label" for="name">
                         Name</label>
                     <div class="col-9">
-                        <input id="name" type="text" name="name" class="form-control" placeholder="Meal Name">
+                        <input id="name" type="text" name="name" class="form-control" placeholder="Meal name">
                     </div>
                 </div>
 
@@ -55,7 +55,7 @@
                         <textarea id="ingredients"
                                   name="ingredients"
                                   class="form-control"
-                                  placeholder="Chicken, peppers, ...."></textarea>
+                                  placeholder="Chicken, peppers,..."></textarea>
                     </div>
                 </div>
 
@@ -66,10 +66,10 @@
                         <textarea id="note"
                                   name="note"
                                   class="form-control"
-                                  placeholder="Pour two cups of water... Dice onions..."></textarea>
+                                  placeholder="Add two cups of water... Dice onions..."></textarea>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="submit" class="btn btn-primary">Add Favorite</button>
             </form>
         </div>
     </div>
@@ -90,7 +90,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="customMeal : ${customMeals}">
-                    <td th:text="${customMeal.id}">Custom Meal Id</td>
+                    <td th:text="${customMeal.id}">Custom Meal ID</td>
                     <td th:text="${customMeal.name}">Custom Meal Name</td>
                     <td><a href="#" th:href="@{/customMealDetail(id=${customMeal.id})}">Details</a> </td>
                     <td><a href="#" th:href="@{/editCustomMeal(id=${customMeal.id})}">Edit</a></td>
