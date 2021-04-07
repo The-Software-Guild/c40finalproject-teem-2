@@ -170,6 +170,13 @@ public class FavoriteController {
         return "redirect:/mealDetail";
     }
 
+    @GetMapping("/addFavorite")
+    public String addFavoriteGet(Integer id){
+        //userDao.addFavorite(id, userId);
+
+        return "meal/mealDetail";
+    }
+
     @GetMapping("/deleteFavorite")
     public String deleteFavorite(Integer mealId){
     userDao.deleteFavorite(mealId, userId);
