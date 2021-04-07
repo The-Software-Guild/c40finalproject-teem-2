@@ -50,8 +50,8 @@
                         Breakfast Meals</label>
                     <div class="col-9">
                         <select multiple id="breakfastMeals" class="form-control js-basic-multiple" name="breakfastMealsIds">
-                            <option th:each="meal : ${meals}" th:value="${meal.id}"
-                                    th:text="${meal.name}"
+                            <option th:each="meal : ${meals}" th:value="${meal.idMeal}"
+                                    th:text="${meal.strMeal}"
                                     >Breakfast Meal</option>
                         </select>
                     </div>
@@ -72,8 +72,8 @@
                         Lunch Meals</label>
                     <div class="col-9">
                         <select multiple id="lunchMeals" class="form-control js-basic-multiple" name="lunchMealsIds">
-                            <option th:each="meal : ${meals}" th:value="${meal.id}"
-                                    th:text="${meal.name}"
+                            <option th:each="meal : ${meals}" th:value="${meal.idMeal}"
+                                    th:text="${meal.strMeal}"
                             >Lunch Meal</option>
                         </select>
                     </div>
@@ -94,8 +94,8 @@
                         Dinner Meals</label>
                     <div class="col-9">
                         <select multiple id="dinnerMeals" class="form-control js-basic-multiple" name="dinnerMealsIds">
-                            <option th:each="meal : ${meals}" th:value="${meal.id}"
-                                    th:text="${meal.name}"
+                            <option th:each="meal : ${meals}" th:value="${meal.idMeal}"
+                                    th:text="${meal.strMeal}"
                             >Dinner Meal</option>
                         </select>
                     </div>

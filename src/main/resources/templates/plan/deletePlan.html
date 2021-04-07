@@ -40,6 +40,32 @@
 
     <div class="row m-4 border border-dark">
         <div class="col text-center m-3">
+            <h3>Meals</h3>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Meal Id</th>
+                    <th>Name</th>
+                    <th>Meal Type</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="planMeal : ${defaultPlanMeals}">
+                    <td th:text="${planMeal.id}">PlanMeal Id</td>
+                    <td th:text="${planMeal.name}">PlanMeal Name</td>
+                    <td th:text="${planMeal.mealTypeName}">MealType Name</td>
+                    <td th:if="${planMeal.isCustom}"><a href="#" th:href="@{/customMealDetail(id=${planMeal.mealId})}">Details</a> </td>
+                    <td th:if="${!planMeal.isCustom}"><a href="#" th:href="@{/mealDetail(id=${planMeal.mealId})}">Details</a> </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row m-4 border border-dark">
+        <div class="col text-center m-3">
+            <h3>Custom Meals</h3>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -53,7 +79,7 @@
                 <tr th:each="planMeal : ${planMeals}">
                     <td th:text="${planMeal.id}">PlanMeal Id</td>
                     <td th:text="${planMeal.name}">PlanMeal Name</td>
-                    <td th:text="${planMeal.mealType.name}">MealType Name</td>
+                    <td th:text="${planMeal.mealTypeName}">MealType Name</td>
                     <td th:if="${planMeal.isCustom}"><a href="#" th:href="@{/customMealDetail(id=${planMeal.mealId})}">Details</a> </td>
                     <td th:if="${!planMeal.isCustom}"><a href="#" th:href="@{/mealDetail(id=${planMeal.mealId})}">Details</a> </td>
                 </tr>
@@ -64,7 +90,7 @@
 
     <div class="row m-4">
         <div class="col text-center m-3">
-            <a href="#" th:href="@{/performDeletePlan(id=${plan.id}))}" class="btn btn-outline-danger btn-lg">Confirm Delete</a>
+            <a href="#" th:href="@{/performDeletePlan(id=${plan.id})}" class="btn btn-outline-danger btn-lg">Confirm Delete</a>
         </div>
 
         <div class="col text-center m-3">
