@@ -16,18 +16,18 @@
 <div class="container">
     <div class="row m-4">
         <div class="col text-center border border-dark">
-            <h1><a href="/" class="text-dark">Meal Planner</a></h1>
+            <h1><a href="/" th:href="@{/home}" class="text-dark">Meal Planner</a></h1>
         </div>
     </div>
     <div class="row m-4 border border-dark">
         <div class="col text-center m-3">
-            <a href="customMeals" class="btn btn-outline-primary btn-lg">Custom Meals</a>
+            <a href="/" th:href="@{/customMeals}" class="btn btn-outline-primary btn-lg">Custom Meals</a>
         </div>
         <div class="col text-center m-3">
             <a href="plans" class="btn btn-outline-primary btn-lg">Plans</a>
         </div>
         <div class="col text-center m-3">
-            <a href="favorites" class="btn btn-outline-primary btn-lg">Favorites</a>
+            <a href="/" th:href="@{/favorites}" class="btn btn-outline-primary btn-lg">Favorites</a>
         </div>
     </div>
 
@@ -44,9 +44,9 @@
                 </thead>
                 <tbody>
                 <tr th:each="meal : ${meals}">
-                    <td th:text="${meal.name}">Favorite Name</td>
-                    <td><a href="#" th:href="@{/mealDetail(id=${meal.id})}">Details</a> </td>
-                    <td><a href="#" th:href="@{/deleteFavorite(id=${meal.id})}">Delete</a></td>
+                    <td th:text="${meal.strMeal}">Favorite Name</td>
+                    <td><a href="#" th:href="@{/mealDetail(id=${meal.idMeal})}">Details</a> </td>
+                    <td><a href="#" th:href="@{/deleteFavoriteFromFavorites(mealId=${meal.idMeal})}">Delete</a></td>
                 </tr>
                 </tbody>
             </table>
