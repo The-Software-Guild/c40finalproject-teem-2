@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -52,6 +53,8 @@ public class PlanController {
         List<ApiMeal> meals = mealService.getMealsFromApi(HomeController.url);
 
         LocalDate now = LocalDate.now();
+
+        Collections.sort(plans);
 
         model.addAttribute("plans", plans);
         model.addAttribute("customMeals", customMeals);
