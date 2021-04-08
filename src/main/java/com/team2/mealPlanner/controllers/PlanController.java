@@ -148,8 +148,9 @@ public class PlanController {
                 customPlanMeals.add(meal);*/
             } else {
                 Meal meal = new Meal();
+                ApiMeal apiMeal = mealService.getMealById(planMeal.getMealId()).get();
                 meal.setId(planMeal.getId());
-                meal.setName("use mealservice to get name by id");
+                meal.setName(apiMeal.getStrMeal());
                 meal.setMealTypeName(planMeal.getMealType().getName());
                 meal.setCustom(false);
                 meal.setMealId(planMeal.getMealId());
@@ -185,8 +186,9 @@ public class PlanController {
                 customPlanMeals.add(meal);
             } else {
                 Meal meal = new Meal();
+                ApiMeal apiMeal = mealService.getMealById(planMeal.getMealId()).get();
                 meal.setId(planMeal.getId());
-                meal.setName("use mealservice to get name by id");
+                meal.setName(apiMeal.getStrMeal());
                 meal.setMealTypeName(planMeal.getMealType().getName());
                 meal.setCustom(false);
                 meal.setMealId(planMeal.getMealId());

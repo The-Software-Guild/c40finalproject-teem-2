@@ -6,6 +6,7 @@ import com.team2.mealPlanner.services.MealService;
 import com.team2.mealPlanner.services.UserServiceImp;
 import com.team2.mealPlanner.utils.ApiMeal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,6 +53,7 @@ public class HomeController {
     public String home(Model model) {
         List<ApiMeal> meals = mealService.getMealsFromApi();
         model.addAttribute("meals", meals);
+
         return "homePage";
     }
 
