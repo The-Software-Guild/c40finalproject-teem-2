@@ -49,7 +49,7 @@ public class PlanController {
 
         List<Plan> plans = userDao.getAllPlansById(user.getId());
         List<CustomMeal> customMeals = userDao.getCustomMealsById(user.getId());
-        List<ApiMeal> meals = mealService.getMealsFromApi();
+        List<ApiMeal> meals = mealService.getMealsFromApi(HomeController.url);
 
         LocalDate now = LocalDate.now();
 
@@ -236,7 +236,7 @@ public class PlanController {
         List<CustomMeal> customLunchMeals = new ArrayList<>();
         List<CustomMeal> customDinnerMeals = new ArrayList<>();
 
-        List<ApiMeal> meals = mealService.getMealsFromApi();
+        List<ApiMeal> meals = mealService.getMealsFromApi(HomeController.url);
         List<ApiMeal> breakfastMeals = new ArrayList<>();
         List<ApiMeal> lunchMeals = new ArrayList<>();
         List<ApiMeal> dinnerMeals = new ArrayList<>();
@@ -332,7 +332,7 @@ public class PlanController {
         plan.setPlanMeals(planMealDao.getAllPlanMealsByPlanId(planMeal.getPlanId()));
 
         List<CustomMeal> customMeals = userDao.getCustomMealsById(user.getId());
-        List<ApiMeal> meals = mealService.getMealsFromApi();
+        List<ApiMeal> meals = mealService.getMealsFromApi(HomeController.url);
 
         model.addAttribute("planMeal", planMeal);
         model.addAttribute("plan", plan);

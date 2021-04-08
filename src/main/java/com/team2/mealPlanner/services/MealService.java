@@ -26,28 +26,34 @@ public class MealService {
 
 
     private static String meal_API_URL= "https://www.themealdb.com/api/json/v1/1/search.php?s=";
+    private static String meal_API_URL_BY_C= "https://www.themealdb.com/api/json/v1/1/filter.php?c=";
+    private static String meal_API_URL_BY_I= "https://www.themealdb.com/api/json/v1/1/filter.php?i=";
+    private static String meal_API_URL_BY_A= "https://www.themealdb.com/api/json/v1/1/filter.php?a=";
 
     @Autowired
     private RestTemplate restTemplate;
 
 
+
+
     public Optional<ApiMeal> getMealById(int id)
     {
-        List<ApiMeal> apiMealList = getMealsFromApi();
+        String url = "https://www.themealdb.com/api/json/v1/1/lookup.php?i="+id;
+        List<ApiMeal> apiMealList = getMealsFromApi(url);
         return apiMealList.stream()
-                    .filter(p->p.getIdMeal().equals(""+id))
-                    .findFirst()
-                    ;
+                .filter(p->p.getIdMeal().equals(""+id))
+                .findFirst()
+                ;
 
     }
 
-    public List<ApiMeal> getMealsFromApi() {
+    public List<ApiMeal> getMealsFromApi(String urlMeal) {
 
         List<ApiMeal> apiMealList = new LinkedList<>();
         String inline = "";
         try
         {
-            URL url = new URL(meal_API_URL);
+            URL url = new URL(urlMeal);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();

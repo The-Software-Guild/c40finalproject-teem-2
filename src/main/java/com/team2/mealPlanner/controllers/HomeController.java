@@ -48,10 +48,10 @@ public class HomeController {
 
         return "signup";
     }
-
+    public static  final String url = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
     @GetMapping("home")
     public String home(Model model) {
-        List<ApiMeal> meals = mealService.getMealsFromApi();
+        List<ApiMeal> meals = mealService.getMealsFromApi(url);
         model.addAttribute("meals", meals);
 
         return "homePage";
