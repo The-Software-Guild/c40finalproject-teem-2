@@ -51,12 +51,14 @@ class PlanDBTest {
     void getAllPlans() {
 
 
+
         User user = new User();
         user.setFirstName("John");
         user.setLastName("Doe");
         user.setUserName("root");
         user.setPassword("rootroot");
         user = userDao.addUser(user);
+
 
         Plan plan = new Plan();
         plan.setDate(LocalDate.now());
