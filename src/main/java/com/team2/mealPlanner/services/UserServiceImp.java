@@ -7,6 +7,7 @@ import com.team2.mealPlanner.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,8 +37,14 @@ public class UserServiceImp implements UserService {
     }
 
 
-    public User findUserByLogin(String userName, String password)
+    public User findUserByUsername()
     {
+        String userName ="";
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails)principal).getUsername();
+
+        }
         return userDao.findUserByLogin(userName);
     }
 

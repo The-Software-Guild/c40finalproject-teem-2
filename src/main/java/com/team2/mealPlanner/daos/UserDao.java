@@ -17,6 +17,6 @@ public interface UserDao {
     List<CustomMeal> getCustomMealsById (int id);
     List<Plan> getAllPlansById (int id);
     User findUserByLogin(String userName);
-    void addFavorite(int userId, int mealId);
+    boolean addFavorite(int userId, int mealId);
     void deleteFavorite(int userId, int mealId);
 }

@@ -189,9 +189,10 @@ public class UserDB implements UserDao {
     }
 
     @Override
-    public void addFavorite(int userId, int mealId) {
+    public boolean addFavorite(int userId, int mealId) {
+        System.out.println(userId+"\t"+ mealId);
         final String ADD_FAVORITE = "INSERT INTO user_favorite (mealId, userId) VALUES (?, ?)";
-        jdbc.update(ADD_FAVORITE, mealId, userId);
+        return  jdbc.update(ADD_FAVORITE, mealId, userId) > 0;
     }
 
     @Override

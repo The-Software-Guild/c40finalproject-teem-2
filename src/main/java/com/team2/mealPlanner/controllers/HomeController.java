@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 @Controller
 public class HomeController {
 
-    static Logger logger = Logger.getLogger(Controller.class.getName());
+    static Logger logger = Logger.getLogger(HomeController.class.getName());
 
     @Autowired
     private UserServiceImp userServiceImp;

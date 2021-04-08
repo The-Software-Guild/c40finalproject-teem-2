@@ -5,21 +5,31 @@ import com.team2.mealPlanner.daos.PlanDao;
 import com.team2.mealPlanner.daos.UserDao;
 import com.team2.mealPlanner.entities.User;
 import com.team2.mealPlanner.services.MealService;
+import com.team2.mealPlanner.services.UserServiceImp;
 import com.team2.mealPlanner.utils.ApiMeal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Logger;
 
 @Controller
 public class FavoriteController {
 
-    int userId = 1;
+    static Logger logger = Logger.getLogger(FavoriteController.class.getName());
+
+    @Autowired
+    UserServiceImp userServiceImp;
 
     @Autowired
     UserDao userDao;
@@ -36,70 +46,23 @@ public class FavoriteController {
 
     @GetMapping("/favorites")
     public String displayFavorites(Model model) {
-        List<Integer> favorites = userDao.getFavoritesById(userId);
-        //model.addAttribute("meals", mealService.getMealsById());
-        ApiMeal testMeal = new ApiMeal();
-        testMeal.setIdMeal("1");
-        testMeal.setStrMeal("Test name");
-        List<ApiMeal> testMeals = new ArrayList<>();
-        testMeals.add(testMeal);
-        model.addAttribute("meals", testMeals);
+        User user = userServiceImp.findUserByUsername();
+
+        List<Integer> favorites = userDao.getFavoritesById(user.getId());
+        List<ApiMeal> listMeals = mealService.getMealsById(favorites);
+        model.addAttribute("meals", listMeals);
         return "meal/favorites";
     }
 
     @GetMapping("/mealDetail")
-    public String displayMeal(Model model){
-        List<Integer> userFavorites = userDao.getFavoritesById(userId);
+    public String displayMeal(Integer id, Model model){
+
+        List<Integer> userFavorites = userDao.getFavoritesById(1);
         if(userFavorites == null){
             userFavorites = new ArrayList<>();
         }
+        ApiMeal meal = mealService.getMealById(id).get();
 
-        ApiMeal meal = new ApiMeal();
-        meal.setIdMeal("1");
-        meal.setStrMeal("Test name");
-        meal.setStrMealThumb("https://www.themealdb.com/images/media/meals/58oia61564916529.jpg");
-        meal.setStrIngredient1("Ing one");
-        meal.setStrIngredient2("INg two");
-        meal.setStrIngredient3("INg two");
-        meal.setStrIngredient4("INg two");
-        meal.setStrIngredient5("INg two");
-        meal.setStrIngredient6("INg two");
-        meal.setStrIngredient7("INg two");
-        meal.setStrIngredient8("INg two");
-        meal.setStrIngredient9("INg two");
-        meal.setStrIngredient10("INg two");
-        meal.setStrIngredient11("INg two");
-        meal.setStrIngredient12("INg two");
-        meal.setStrIngredient13("INg two");
-        meal.setStrIngredient14("INg two");
-        meal.setStrIngredient15("INg two");
-        meal.setStrIngredient16("INg two");
-        meal.setStrIngredient17("INg two");
-        meal.setStrIngredient18("INg two");
-        meal.setStrIngredient19("INg two");
-        meal.setStrIngredient20("INg two");
-
-        meal.setStrMeasure1("measure 2");
-        meal.setStrMeasure2("measure 2");
-        meal.setStrMeasure3("measure 2");
-        meal.setStrMeasure4("measure 2");
-        meal.setStrMeasure5("measure 2");
-        meal.setStrMeasure6("measure 2");
-        meal.setStrMeasure7("measure 2");
-        meal.setStrMeasure8("measure 2");
-        meal.setStrMeasure9("measure 2");
-        meal.setStrMeasure10("measure 2");
-        meal.setStrMeasure11("measure 2");
-        meal.setStrMeasure12("measure 2");
-        meal.setStrMeasure13("measure 2");
-        meal.setStrMeasure14("measure 2");
-        meal.setStrMeasure15("measure 2");
-        meal.setStrMeasure16("measure 2");
-        meal.setStrMeasure17("measure 2");
-        meal.setStrMeasure18("measure 2");
-        meal.setStrMeasure19("measure 2");
-        meal.setStrMeasure20(null);
-        meal.setStrYoutube("https:\\/\\/www.youtube.com\\/watch?v=1IszT_guI08");
 
         if(meal.getStrYoutube() != null){
             String videoId = meal.getStrYoutube().split("\\?v=")[1];
@@ -166,32 +129,45 @@ public class FavoriteController {
 
     @PostMapping("/addFavorite")
     public String addFavorite(Integer mealId){
-       userDao.addFavorite(mealId, userId);
-        return "redirect:/mealDetail";
+        User user = userServiceImp.findUserByUsername();
+
+        userDao.addFavorite(user.getId(), mealId);
+        return "redirect:/mealDetail?id="+mealId;
     }
 
     @GetMapping("/addFavorite")
     public String addFavoriteGet(Integer id){
-        //userDao.addFavorite(id, userId);
+        User user = userServiceImp.findUserByUsername();
 
-        return "meal/mealDetail";
+        try{
+            userDao.addFavorite(user.getId(), id);
+        }catch(Exception e )
+        {
+            logger.info(e.getMessage());
+        }
+        return "redirect:/mealDetail?id="+id;
     }
 
+
+
     @GetMapping("/deleteFavorite")
-    public String deleteFavorite(Integer mealId){
-    userDao.deleteFavorite(mealId, userId);
-        return "redirect:/mealDetail";
+    public String deleteFavorite(Integer mealId, RedirectAttributes redirectAttrs){
+        User user = userServiceImp.findUserByUsername();
+        userDao.deleteFavorite(user.getId(), mealId);
+        return "redirect:/mealDetail?id="+mealId;
     }
 
     @GetMapping("/deleteFavoriteFromFavorites")
     public String deleteFavoriteFromFavorites(Integer mealId){
-        userDao.deleteFavorite(mealId, userId);
+        User user = userServiceImp.findUserByUsername();
+        userDao.deleteFavorite(user.getId(), mealId);
         return "redirect:/favorites";
     }
 
     @GetMapping("/deleteFavoriteFromHome")
     public String deleteFavoriteFromHome(Integer mealId){
-        userDao.deleteFavorite(mealId, userId);
+        User user = userServiceImp.findUserByUsername();
+        userDao.deleteFavorite(user.getId(), mealId );
         return "redirect:/home";
     }
 

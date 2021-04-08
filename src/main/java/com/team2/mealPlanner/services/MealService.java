@@ -16,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -29,6 +30,16 @@ public class MealService {
     @Autowired
     private RestTemplate restTemplate;
 
+
+    public Optional<ApiMeal> getMealById(int id)
+    {
+        List<ApiMeal> apiMealList = getMealsFromApi();
+        return apiMealList.stream()
+                    .filter(p->p.getIdMeal().equals(""+id))
+                    .findFirst()
+                    ;
+
+    }
 
     public List<ApiMeal> getMealsFromApi() {
 
@@ -160,10 +171,7 @@ public class MealService {
                 if(jsonObject.get("dateModified") == null) apiMeal.setDateModified("");
                 else   apiMeal.setDateModified(jsonObject.get("dateModified").toString());
 
-
-
                 apiMealList.add(apiMeal);
-                logger.info(apiMeal.toString());
 
             }
             //Disconnect the HttpURLConnection stream
@@ -177,4 +185,11 @@ public class MealService {
     }
 
 
+    public List<ApiMeal> getMealsById(List<Integer> favorites) {
+
+        List<ApiMeal> list =new LinkedList<>();
+        for (Integer id : favorites)
+              list.add(getMealById(id).get());
+        return list;
+    }
 }
