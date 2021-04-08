@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-public class Plan {
+public class Plan implements Comparable<Plan> {
     private int id;
     private int idUser;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -59,5 +59,10 @@ public class Plan {
     @Override
     public int hashCode() {
         return Objects.hash(id, idUser, date, planMeals);
+    }
+
+    @Override
+    public int compareTo(Plan o) {
+        return getDate().compareTo(o.getDate());
     }
 }
