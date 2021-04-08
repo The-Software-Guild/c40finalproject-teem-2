@@ -33,7 +33,13 @@
 
 
     <!--- ADD CUSTOM MEAL SECTION HERE ---->
+
     <div class="row m-4 border border-dark">
+        <div class="col-12 m-1 text-center"
+             th:if="${!errors.isEmpty()}">
+            <p class="alert alert-danger" th:each="error : ${errors}"
+               th:text="${error.message}">Error message</p>
+        </div>
         <div class="col-3 text-center m-3">
             <span class="h3">Adding Custom Meal</span>
         </div>
@@ -73,7 +79,7 @@
             </form>
         </div>
     </div>
-
+    </div>
     <!--- END ADD CUSTOM MEAL SECTION HERE ---->
 
     <div class="row m-4 border border-dark">
@@ -101,7 +107,6 @@
         </div>
     </div>
 
-</div>
 <!-- End main body -->
 
 <!-- Optional JavaScript -->
