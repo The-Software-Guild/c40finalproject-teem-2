@@ -22,13 +22,9 @@ import java.util.Set;
 
 @Controller
 public class CustomMealController {
-<<<<<<< Updated upstream
 
     @Autowired
     UserServiceImp userServiceImp;
-=======
-    int userId = 1;
->>>>>>> Stashed changes
 
     @Autowired
     UserDao userDao;
@@ -49,19 +45,14 @@ public class CustomMealController {
 
     @PostMapping("/addCustomMeal")
     public String addCustomMeal(CustomMeal customMeal) {
-<<<<<<< Updated upstream
         User user = userServiceImp.findUserByUsername();
         customMeal.setUserId(user.getId());
-        customMealDao.add(customMeal);
-=======
-        customMeal.setUserId(userId);
 
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(customMeal);
         if(violations.isEmpty()) {
             customMealDao.add(customMeal);
         }
->>>>>>> Stashed changes
         return "redirect:/customMeals";
     }
 
@@ -95,19 +86,15 @@ public class CustomMealController {
 
     @PostMapping("/editCustomMeal")
     public String performEditCustomMeal(CustomMeal customMeal) {
-<<<<<<< Updated upstream
         User user = userServiceImp.findUserByUsername();
         customMeal.setUserId(user.getId());
-        customMealDao.update(customMeal);
-=======
-        customMeal.setUserId(userId);
+        
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(customMeal);
 
         if(violations.isEmpty()) {
             customMealDao.update(customMeal);
         }
->>>>>>> Stashed changes
         return "redirect:/customMeals";
     }
 }
