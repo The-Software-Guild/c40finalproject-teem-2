@@ -8,11 +8,13 @@ import com.team2.mealPlanner.utils.ApiMeal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,9 +51,12 @@ public class PlanController {
         List<CustomMeal> customMeals = userDao.getCustomMealsById(user.getId());
         List<ApiMeal> meals = mealService.getMealsFromApi();
 
+        LocalDate now = LocalDate.now();
+
         model.addAttribute("plans", plans);
         model.addAttribute("customMeals", customMeals);
         model.addAttribute("meals", meals);
+        model.addAttribute("now", now);
 
         return "plan/plans";
     }
@@ -221,6 +226,8 @@ public class PlanController {
 
         User user = userServiceImp.findUserByUsername();
 
+        LocalDate now = LocalDate.now();
+
         Plan plan = planDao.getPlanById(id);
         List<PlanMeal> planMeals = planMealDao.getAllPlanMealsByPlanId(plan.getId());
 
@@ -246,11 +253,11 @@ public class PlanController {
                     }
                 } else {
                     if (planMeal.getMealTypeId() == 1) {
-                        //breakfastMeals.add();
+                        breakfastMeals.add(mealService.getMealById(planMeal.getMealId()).get());
                     } else if (planMeal.getMealTypeId() == 2) {
-                        //lunchMeals.add();
+                        lunchMeals.add(mealService.getMealById(planMeal.getMealId()).get());
                     } else if (planMeal.getMealTypeId() == 3) {
-                        //dinnerMeals.add();
+                        dinnerMeals.add(mealService.getMealById(planMeal.getMealId()).get());
                     }
                 }
             }
@@ -265,6 +272,7 @@ public class PlanController {
         model.addAttribute("breakfastMeals", breakfastMeals);
         model.addAttribute("lunchMeals", lunchMeals);
         model.addAttribute("dinnerMeals", dinnerMeals);
+        model.addAttribute("now", now);
 
         return "plan/editPlan";
     }
@@ -342,10 +350,10 @@ public class PlanController {
 
         PlanMeal planMeal = planMealDao.getPlanMealById(id);
 
-        if (mealId != null && customMealId == null && !planMeal.isCustom()) {
+        if (!planMeal.isCustom()) {
             planMeal.setMealId(Integer.parseInt(mealId));
             planMeal.setCustom(false);
-        } else if (mealId == null && customMealId != null && planMeal.isCustom()) {
+        } else {
             planMeal.setMealId(Integer.parseInt(customMealId));
             planMeal.setCustom(true);
         }

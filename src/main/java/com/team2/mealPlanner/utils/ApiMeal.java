@@ -4,6 +4,8 @@ package com.team2.mealPlanner.utils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 public class ApiMeal {
@@ -493,5 +495,18 @@ public class ApiMeal {
         return "ApiMeal{" +
                 "strImageSource='" + strImageSource + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ApiMeal apiMeal = (ApiMeal) o;
+        return Objects.equals(idMeal, apiMeal.idMeal) && Objects.equals(strMeal, apiMeal.strMeal) && Objects.equals(strDrinkAlternate, apiMeal.strDrinkAlternate) && Objects.equals(strCategory, apiMeal.strCategory) && Objects.equals(strArea, apiMeal.strArea) && Objects.equals(strInstructions, apiMeal.strInstructions) && Objects.equals(strMealThumb, apiMeal.strMealThumb) && Objects.equals(strTags, apiMeal.strTags) && Objects.equals(strYoutube, apiMeal.strYoutube) && Objects.equals(strIngredient1, apiMeal.strIngredient1) && Objects.equals(strIngredient2, apiMeal.strIngredient2) && Objects.equals(strIngredient3, apiMeal.strIngredient3) && Objects.equals(strIngredient4, apiMeal.strIngredient4) && Objects.equals(strIngredient5, apiMeal.strIngredient5) && Objects.equals(strIngredient6, apiMeal.strIngredient6) && Objects.equals(strIngredient7, apiMeal.strIngredient7) && Objects.equals(strIngredient8, apiMeal.strIngredient8) && Objects.equals(strIngredient9, apiMeal.strIngredient9) && Objects.equals(strIngredient10, apiMeal.strIngredient10) && Objects.equals(strIngredient11, apiMeal.strIngredient11) && Objects.equals(strIngredient12, apiMeal.strIngredient12) && Objects.equals(strIngredient13, apiMeal.strIngredient13) && Objects.equals(strIngredient14, apiMeal.strIngredient14) && Objects.equals(strIngredient15, apiMeal.strIngredient15) && Objects.equals(strIngredient16, apiMeal.strIngredient16) && Objects.equals(strIngredient17, apiMeal.strIngredient17) && Objects.equals(strIngredient18, apiMeal.strIngredient18) && Objects.equals(strIngredient19, apiMeal.strIngredient19) && Objects.equals(strIngredient20, apiMeal.strIngredient20) && Objects.equals(strMeasure1, apiMeal.strMeasure1) && Objects.equals(strMeasure2, apiMeal.strMeasure2) && Objects.equals(strMeasure3, apiMeal.strMeasure3) && Objects.equals(strMeasure4, apiMeal.strMeasure4) && Objects.equals(strMeasure5, apiMeal.strMeasure5) && Objects.equals(strMeasure6, apiMeal.strMeasure6) && Objects.equals(strMeasure7, apiMeal.strMeasure7) && Objects.equals(strMeasure8, apiMeal.strMeasure8) && Objects.equals(strMeasure9, apiMeal.strMeasure9) && Objects.equals(strMeasure10, apiMeal.strMeasure10) && Objects.equals(strMeasure11, apiMeal.strMeasure11) && Objects.equals(strMeasure12, apiMeal.strMeasure12) && Objects.equals(strMeasure13, apiMeal.strMeasure13) && Objects.equals(strMeasure14, apiMeal.strMeasure14) && Objects.equals(strMeasure15, apiMeal.strMeasure15) && Objects.equals(strMeasure16, apiMeal.strMeasure16) && Objects.equals(strMeasure17, apiMeal.strMeasure17) && Objects.equals(strMeasure18, apiMeal.strMeasure18) && Objects.equals(strMeasure19, apiMeal.strMeasure19) && Objects.equals(strMeasure20, apiMeal.strMeasure20) && Objects.equals(strSource, apiMeal.strSource) && Objects.equals(strImageSource, apiMeal.strImageSource) && Objects.equals(strCreativeCommonsConfirmed, apiMeal.strCreativeCommonsConfirmed) && Objects.equals(dateModified, apiMeal.dateModified);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idMeal, strMeal, strDrinkAlternate, strCategory, strArea, strInstructions, strMealThumb, strTags, strYoutube, strIngredient1, strIngredient2, strIngredient3, strIngredient4, strIngredient5, strIngredient6, strIngredient7, strIngredient8, strIngredient9, strIngredient10, strIngredient11, strIngredient12, strIngredient13, strIngredient14, strIngredient15, strIngredient16, strIngredient17, strIngredient18, strIngredient19, strIngredient20, strMeasure1, strMeasure2, strMeasure3, strMeasure4, strMeasure5, strMeasure6, strMeasure7, strMeasure8, strMeasure9, strMeasure10, strMeasure11, strMeasure12, strMeasure13, strMeasure14, strMeasure15, strMeasure16, strMeasure17, strMeasure18, strMeasure19, strMeasure20, strSource, strImageSource, strCreativeCommonsConfirmed, dateModified);
     }
 }
