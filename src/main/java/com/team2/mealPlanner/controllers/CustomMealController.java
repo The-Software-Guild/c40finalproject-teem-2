@@ -3,6 +3,8 @@ package com.team2.mealPlanner.controllers;
 import com.team2.mealPlanner.daos.CustomMealDao;
 import com.team2.mealPlanner.daos.UserDao;
 import com.team2.mealPlanner.entities.CustomMeal;
+import com.team2.mealPlanner.entities.User;
+import com.team2.mealPlanner.services.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +16,8 @@ import java.util.List;
 @Controller
 public class CustomMealController {
 
-    int userId = 1;
+    @Autowired
+    UserServiceImp userServiceImp;
 
     @Autowired
     UserDao userDao;
@@ -24,14 +27,16 @@ public class CustomMealController {
 
     @GetMapping("/customMeals")
     public String displayCustomMeals(Model model) {
-        List<CustomMeal> customMeals = userDao.getCustomMealsById(userId);
+        User user = userServiceImp.findUserByUsername();
+        List<CustomMeal> customMeals = userDao.getCustomMealsById(user.getId());
         model.addAttribute("customMeals", customMeals);
         return "customMeal/customMeals";
     }
 
     @PostMapping("/addCustomMeal")
     public String addCustomMeal(CustomMeal customMeal) {
-        customMeal.setUserId(userId);
+        User user = userServiceImp.findUserByUsername();
+        customMeal.setUserId(user.getId());
         customMealDao.add(customMeal);
         return "redirect:/customMeals";
     }
@@ -65,7 +70,8 @@ public class CustomMealController {
 
     @PostMapping("/editCustomMeal")
     public String performEditCustomMeal(CustomMeal customMeal) {
-        customMeal.setUserId(userId);
+        User user = userServiceImp.findUserByUsername();
+        customMeal.setUserId(user.getId());
         customMealDao.update(customMeal);
         return "redirect:/customMeals";
     }
