@@ -20,7 +20,7 @@ function showResult(){
                                      htm +='<tr>';
                                           htm+='<td><img src ="'+meal.strMealThumb+'" class="rounded" style="width:249px;height:249px;"/></td>';
                                           htm+='<td>'+meal.strMeal+'</td>';
-                                          htm+='<td>'+meal.strMealThumb+'</td>';
+                                          htm+='<td><a href="/mealDetail?id='+meal.idMeal+'">Details</a></td>';
                                           htm+='<td><a href="/addFavorite?id='+meal.idMeal+'">Favorite</a></td>';
                                      htm+='</tr>';
 
@@ -51,7 +51,7 @@ function showResult(){
                                              htm +='<tr>';
                                                   htm+='<td><img src ="'+meal.strMealThumb+'" class="rounded" style="width:249px;height:249px;"/></td>';
                                                   htm+='<td>'+meal.strMeal+'</td>';
-                                                  htm+='<td>'+meal.strMealThumb+'</td>';
+                                                  htm+='<td><a href="/mealDetail?id='+meal.idMeal+'">Details</a></td>';
                                                   htm+='<td><a href="/addFavorite?id='+meal.idMeal+'">Favorite</a></td>';
                                              htm+='</tr>';
 
@@ -83,7 +83,7 @@ function showResult(){
                                                      htm +='<tr>';
                                                           htm+='<td><img src ="'+meal.strMealThumb+'" class="rounded" style="width:249px;height:249px;"/></td>';
                                                           htm+='<td>'+meal.strMeal+'</td>';
-                                                          htm+='<td>'+meal.strMealThumb+'</td>';
+                                                          htm+='<td><a href="/mealDetail?id='+meal.idMeal+'">Details</a></td>';
                                                           htm+='<td><a href="/addFavorite?id='+meal.idMeal+'">Favorite</a></td>';
                                                      htm+='</tr>';
 
@@ -115,7 +115,7 @@ function showResult(){
                                                              htm +='<tr>';
                                                                   htm+='<td><img src ="'+meal.strMealThumb+'" class="rounded" style="width:249px;height:249px;"/></td>';
                                                                   htm+='<td>'+meal.strMeal+'</td>';
-                                                                  htm+='<td>'+meal.strMealThumb+'</td>';
+                                                                  htm+='<td><a href="/mealDetail?id='+meal.idMeal+'">Details</a></td>';
                                                                   htm+='<td><a href="/addFavorite?id='+meal.idMeal+'">Favorite</a></td>';
                                                              htm+='</tr>';
 
