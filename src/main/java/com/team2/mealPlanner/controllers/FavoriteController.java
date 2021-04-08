@@ -57,7 +57,9 @@ public class FavoriteController {
     @GetMapping("/mealDetail")
     public String displayMeal(Integer id, Model model){
 
-        List<Integer> userFavorites = userDao.getFavoritesById(1);
+        User user = userServiceImp.findUserByUsername();
+
+        List<Integer> userFavorites = userDao.getFavoritesById(user.getId());
         if(userFavorites == null){
             userFavorites = new ArrayList<>();
         }
