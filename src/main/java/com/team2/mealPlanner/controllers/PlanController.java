@@ -1,11 +1,9 @@
 package com.team2.mealPlanner.controllers;
 
 import com.team2.mealPlanner.daos.*;
-import com.team2.mealPlanner.entities.CustomMeal;
-import com.team2.mealPlanner.entities.Meal;
-import com.team2.mealPlanner.entities.Plan;
-import com.team2.mealPlanner.entities.PlanMeal;
+import com.team2.mealPlanner.entities.*;
 import com.team2.mealPlanner.services.MealService;
+import com.team2.mealPlanner.services.UserServiceImp;
 import com.team2.mealPlanner.utils.ApiMeal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +19,8 @@ import java.util.List;
 @Controller
 public class PlanController {
 
-    int userId = 1;
+    @Autowired
+    UserServiceImp userServiceImp;
 
     @Autowired
     UserDao userDao;
@@ -44,8 +43,10 @@ public class PlanController {
     @GetMapping("/plans")
     public String displayPlans(Model model) {
 
-        List<Plan> plans = userDao.getAllPlansById(userId);
-        List<CustomMeal> customMeals = userDao.getCustomMealsById(userId);
+        User user = userServiceImp.findUserByUsername();
+
+        List<Plan> plans = userDao.getAllPlansById(user.getId());
+        List<CustomMeal> customMeals = userDao.getCustomMealsById(user.getId());
         List<ApiMeal> meals = mealService.getMealsFromApi();
 
         model.addAttribute("plans", plans);
@@ -58,7 +59,9 @@ public class PlanController {
     @PostMapping("/addPlan")
     public String addPlan(Plan plan, HttpServletRequest request) {
 
-        plan.setIdUser(userId);
+        User user = userServiceImp.findUserByUsername();
+
+        plan.setIdUser(user.getId());
         plan = planDao.addPlan(plan);
 
         List<PlanMeal> planMeals = new ArrayList<>();
@@ -214,10 +217,12 @@ public class PlanController {
     @GetMapping("/editPlan")
     public String editPlan(Integer id, Model model) {
 
+        User user = userServiceImp.findUserByUsername();
+
         Plan plan = planDao.getPlanById(id);
         List<PlanMeal> planMeals = planMealDao.getAllPlanMealsByPlanId(plan.getId());
 
-        List<CustomMeal> customMeals = userDao.getCustomMealsById(userId);
+        List<CustomMeal> customMeals = userDao.getCustomMealsById(user.getId());
         List<CustomMeal> customBreakfastMeals = new ArrayList<>();
         List<CustomMeal> customLunchMeals = new ArrayList<>();
         List<CustomMeal> customDinnerMeals = new ArrayList<>();
@@ -266,7 +271,9 @@ public class PlanController {
     @CrossOrigin
     public String performEditPlan(Plan plan, HttpServletRequest request) {
 
-        plan.setIdUser(userId);
+        User user = userServiceImp.findUserByUsername();
+
+        plan.setIdUser(user.getId());
         planDao.updatePlan(plan);
 
         List<PlanMeal> planMeals = new ArrayList<>();
@@ -307,12 +314,14 @@ public class PlanController {
     @GetMapping("/editPlanMeal")
     public String editPlanMeal(Integer id, Model model) {
 
+        User user = userServiceImp.findUserByUsername();
+
         PlanMeal planMeal = planMealDao.getPlanMealById(id);
 
         Plan plan = planDao.getPlanById(planMeal.getPlanId());
         plan.setPlanMeals(planMealDao.getAllPlanMealsByPlanId(planMeal.getPlanId()));
 
-        List<CustomMeal> customMeals = userDao.getCustomMealsById(userId);
+        List<CustomMeal> customMeals = userDao.getCustomMealsById(user.getId());
         List<ApiMeal> meals = mealService.getMealsFromApi();
 
         model.addAttribute("planMeal", planMeal);
