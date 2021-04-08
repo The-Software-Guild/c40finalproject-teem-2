@@ -1,12 +1,21 @@
 package com.team2.mealPlanner.entities;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class CustomMeal {
     private int id;
     private int userId;
+    @NotBlank(message = "Name must not be empty.")
+    @Size(max = 50, message="Please enter a name.")
     private String name;
+    @NotBlank(message = "Ingredients must not be empty.")
+    @Size(max = 500, message="Please add in the ingredients.")
     private String ingredients;
+    @NotBlank(message = "Note must not be empty.")
+    @Size(max = 500, message="Please enter a note.")
     private String note;
 
     public CustomMeal() {
