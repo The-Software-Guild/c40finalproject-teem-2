@@ -73,7 +73,7 @@ public class FavoriteController {
         }
 
 
-        List<String> ingredientList = Arrays.asList(
+        List<String> ingredientList = new LinkedList<>(Arrays.asList(
                 meal.getStrIngredient1(),
                 meal.getStrIngredient2(),
                 meal.getStrIngredient3(),
@@ -94,9 +94,9 @@ public class FavoriteController {
                 meal.getStrIngredient18(),
                 meal.getStrIngredient19(),
                 meal.getStrIngredient20()
-        );
+        ));
 
-        List<String> measurementsList = Arrays.asList(
+        List<String> measurementsList = new LinkedList<>(Arrays.asList(
                 meal.getStrMeasure1(),
                 meal.getStrMeasure2(),
                 meal.getStrMeasure3(),
@@ -117,9 +117,12 @@ public class FavoriteController {
                 meal.getStrMeasure18(),
                 meal.getStrMeasure19(),
                 meal.getStrMeasure20()
-        );
+        ));
 
         Boolean isFavorite = userFavorites.contains(Integer.parseInt(meal.getIdMeal()));
+
+        ingredientList.removeIf(s -> (s.isBlank()));
+        measurementsList.removeIf(s -> (s.isBlank()));
 
         model.addAttribute("meal", meal);
         model.addAttribute("ingredients", ingredientList);
