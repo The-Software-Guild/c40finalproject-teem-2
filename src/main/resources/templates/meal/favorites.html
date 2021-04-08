@@ -46,7 +46,7 @@
                 <tr th:each="meal : ${meals}">
                     <td th:text="${meal.strMeal}">Favorite Name</td>
                     <td><a href="#" th:href="@{/mealDetail(id=${meal.idMeal})}">Details</a> </td>
-                    <td><a href="#" th:href="@{/deleteFavoriteFromFavorites(mealId=${meal.idMeal})}">Delete</a></td>
+                    <td><a href="#" th:href="@{/deleteFavoriteFromFavorites(mealId=${meal.idMeal})}" onclick="return confirm('Are you sure you want to delete this favorite?');">Delete</a></td>
                 </tr>
                 </tbody>
             </table>
