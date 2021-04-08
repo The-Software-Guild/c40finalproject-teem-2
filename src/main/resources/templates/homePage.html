@@ -12,8 +12,8 @@
     <div class="container">
 
         <div class="row m-4">
-            <div class="col text-center border border-dark">
-                <h1><a href="/" th:href="@{/home}" class="text-dark">Happy Belly</a></h1>
+            <div class="col text-center border border-dark" style="background-color: #4aa1ff; font-family: Arial, sans-serif;">
+                <h1><a href="/" th:href="@{/home}" class="text-dark"><strong>Full Belly</strong></a></h1>
             </div>
         </div>
         <div class="row m-4 border border-dark">
@@ -34,28 +34,27 @@
 
                 <!--container for Contact List table -->
                 <div id="mainDiv">
-                    <div class="btn-toolbar">
-                        <div class="col-sm">
-<!--                            <button type="button" id="btnCreate" class="btn btn-primary mr-2 mb-2" onclick="showAddFrom()">Create Custom Meal</button>-->
-                        </div>
+                    <div class="col-12" style="display: flex; justify-content: center; align-items: center;">
 
                         <div class="col-sm">
-                            <button type="button" id="searchButton" th:onclick="'javascript:showResult()'" class="btn btn-primary mr-2 mb-2">Search</button>
+                            <div class="col-sm">
+                                <button type="button" id="searchButton" th:onclick="'javascript:showResult()'" class="btn btn-primary mr-2 mb-2">Search</button>
 
-                            <select class="form-select" aria-label="Default select example" id="categoryButton" required>
-                                <option disabled selected value="0" >Open this select menu</option>
-                                <option value="s">Name</option>
-                                <option value="c">Category</option>
-                                <option value="a">Area</option>
-                                <option value="i">Main Ingredient</option>
-                            </select>
-                        </div>
-
-                        <div class="col-sm">
-                            <input type="search" id="searchTerm" class="form-control rounded" placeholder="Search" aria-label="Search"
-                                   aria-describedby="search-addon" />
+                                <select class="form-select" aria-label="Default select example" id="categoryButton" required>
+                                    <option disabled selected value="0" >-SELECT CATEGORY-</option>
+                                    <option value="s">Name</option>
+                                    <option value="c">Category</option>
+                                    <option value="a">Area</option>
+                                    <option value="i">Main Ingredient</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <input type="search" id="searchTerm" class="form-control rounded" placeholder="Start Typing Here..." aria-label="Search"
+                                       aria-describedby="search-addon" />
+                            </div>
                         </div>
                     </div>
+                    <br/>
 
                     <table id="contactTable" class="table table-hover">
                         <thead>
