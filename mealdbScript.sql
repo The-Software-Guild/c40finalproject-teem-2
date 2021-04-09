@@ -1,0 +1,49 @@
+DROP DATABASE IF EXISTS mealplanDb;
+CREATE DATABASE mealplanDb;
+USE mealplanDb;
+
+CREATE TABLE user(
+id INT AUTO_INCREMENT NOT NULL,
+userName VARCHAR(25) UNIQUE NOT NULL, 
+firstName VARCHAR(50) NOT NULL,
+lastName VARCHAR(50) NOT NULL,
+password VARCHAR(500) NOT NULL,
+PRIMARY KEY (id)
+);
+CREATE TABLE user_favorite(
+mealId INT NOT NULL, 
+userId INT NOT NULL,
+PRIMARY KEY (userId, mealId),
+FOREIGN KEY (userId) REFERENCES user(id)
+);
+CREATE TABLE customMeal(
+id INT AUTO_INCREMENT NOT NULL,
+userId INT NOT NULL,
+name VARCHAR(50),
+ingredients VARCHAR(500) NOT NULL,
+note VARCHAR (500) NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (userId) REFERENCES user(id)
+);
+CREATE TABLE plan(
+id INT AUTO_INCREMENT NOT NULL,
+date DATE NOT NULL,
+userId INT NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (userId) REFERENCES user(id)
+);
+CREATE TABLE mealType(
+id INT NOT NULL,
+name VARCHAR(50),
+PRIMARY KEY (id)
+);
+CREATE TABLE plan_meal(
+id INT NOT NULL auto_increment,
+planId INT NOT NULL,
+mealId INT NOT NULL,
+mealTypeId INT NOT NULL,
+isCustom BOOLEAN NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (planId) REFERENCES plan(id),
+FOREIGN KEY (mealTypeId) REFERENCES mealType(id)
+);
